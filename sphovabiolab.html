@@ -1,0 +1,1240 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Sphova's Bio Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout concept: one phone-shaped column. Vertical swipe feed on top of a pink tab bar, everything else is a panel that slides over the feed. */
+:root{
+  --bg:#FFEFF6; --bg2:#FFD9EA; --card:#FFFFFF; --ink:#3A0B26; --ink2:#7A4560; --line:#F5C2DA;
+  --pink:#E3157E; --pink2:#FF5CA8; --pinkSoft:#FFC2DE; --gold:#FFC93C; --good:#0E8F4F; --goodSoft:#CFF2DE; --bad:#D6341F; --badSoft:#FFD8D1;
+  --t1:#FF2E93; --t2:#F43F5E; --t3:#D946EF; --t4:#FF6B81; --t5:#C026D3; --t6:#E11D74; --t7:#FF77B7; --t8:#F472B6; --t9:#BE185D; --t10:#FB7185;
+  --shadow:0 10px 30px -12px rgba(120,10,70,.35);
+  --display:"Bagel Fat One","Trebuchet MS",system-ui,sans-serif; --body:"Outfit",system-ui,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1D0615; --bg2:#2F0A23; --card:#3B1031; --ink:#FFE8F3; --ink2:#E5AFCB; --line:#62204A;
+  --pink:#FF4FA6; --pink2:#FF7DBE; --pinkSoft:#6E1B4D; --gold:#FFD25A; --good:#4BD58A; --goodSoft:#14472F; --bad:#FF7A66; --badSoft:#552018;
+  --t1:#FF5CA8; --t2:#FF6B86; --t3:#E879F9; --t4:#FF8A9B; --t5:#D96BEA; --t6:#FF5C9E; --t7:#FF9CCB; --t8:#F8A0CD; --t9:#F0609C; --t10:#FF93A3;
+  --shadow:0 10px 30px -12px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1D0615; --bg2:#2F0A23; --card:#3B1031; --ink:#FFE8F3; --ink2:#E5AFCB; --line:#62204A;
+  --pink:#FF4FA6; --pink2:#FF7DBE; --pinkSoft:#6E1B4D; --gold:#FFD25A; --good:#4BD58A; --goodSoft:#14472F; --bad:#FF7A66; --badSoft:#552018;
+  --t1:#FF5CA8; --t2:#FF6B86; --t3:#E879F9; --t4:#FF8A9B; --t5:#D96BEA; --t6:#FF5C9E; --t7:#FF9CCB; --t8:#F8A0CD; --t9:#F0609C; --t10:#FF93A3;
+  --shadow:0 10px 30px -12px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body);overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+#app{height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;position:relative;background:var(--bg);box-shadow:0 0 0 1px var(--line);overflow:hidden}
+.top{display:flex;align-items:center;gap:10px;padding:10px 16px 8px;flex:none}
+.logo{font-family:var(--display);font-size:22px;color:var(--pink);letter-spacing:.2px;line-height:1;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.chip svg{width:16px;height:16px}
+#view{flex:1;min-height:0;position:relative}
+.tabs{flex:none;display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:2px solid var(--line)}
+.tab{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:14px;font-size:11px;font-weight:600;color:var(--ink2)}
+.tab svg{width:24px;height:24px}
+.tab[aria-selected="true"]{color:#fff;background:var(--pink)}
+.panel{position:absolute;inset:0;overflow-y:auto;padding:8px 16px 28px;overscroll-behavior:contain}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.1;text-wrap:balance}
+h2{font-size:26px}
+h3{font-size:19px}
+.sub{color:var(--ink2);margin:4px 0 14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;background:var(--pink);color:#fff;font-weight:700;border-radius:16px;padding:12px 18px;box-shadow:0 4px 0 color-mix(in srgb,var(--pink) 60%,#000);transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--pink) 60%,#000)}
+.btn svg{width:20px;height:20px;flex:none}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.sm{padding:8px 12px;font-size:14px;border-radius:12px}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:color-mix(in srgb,var(--tc,var(--pink)) 22%,var(--card));color:var(--ink);border:2px solid var(--tc,var(--pink))}
+
+/* FEED */
+.feedwrap{position:absolute;inset:0;display:flex;flex-direction:column}
+.topicbar{flex:none;display:flex;gap:8px;overflow-x:auto;padding:4px 16px 10px;scrollbar-width:none}
+.topicbar::-webkit-scrollbar{display:none}
+.tchip{flex:none;border:2px solid var(--tc,var(--pink));background:var(--card);border-radius:999px;padding:6px 13px;font-weight:700;font-size:14px;white-space:nowrap}
+.tchip[aria-pressed="true"]{background:var(--tc,var(--pink));color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.prog{flex:none;display:flex;gap:3px;padding:0 16px 8px}
+.prog i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.prog i.on{background:var(--pink)}
+.feed{flex:1;min-height:0;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
+.feed::-webkit-scrollbar{display:none}
+.slide{height:var(--slideh,70vh);scroll-snap-align:start;scroll-snap-stop:always;position:relative;padding:6px 16px 10px;display:flex}
+.slidein{flex:1;min-width:0;border-radius:28px;padding:20px 66px 20px 20px;display:flex;flex-direction:column;gap:12px;overflow:hidden;position:relative;
+  background:radial-gradient(120% 70% at 100% 0%,color-mix(in srgb,var(--tc) 38%,var(--card)) 0%,transparent 60%),linear-gradient(180deg,color-mix(in srgb,var(--tc) 16%,var(--card)),var(--card));
+  border:2px solid color-mix(in srgb,var(--tc) 55%,var(--line))}
+.slidein .blob{position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:color-mix(in srgb,var(--tc) 22%,transparent);pointer-events:none}
+.hook{font-family:var(--display);font-size:clamp(26px,7.2vw,36px);line-height:1.05;text-wrap:balance}
+.txt{font-size:clamp(16px,4.3vw,19px);line-height:1.5;overflow-y:auto;min-height:0}
+.txt b{background:color-mix(in srgb,var(--gold) 55%,transparent);border-radius:5px;padding:0 3px;font-weight:700}
+.tip{margin-top:auto;border:2px dashed var(--tc);border-radius:16px;padding:9px 12px;font-weight:600;font-size:15px;background:color-mix(in srgb,var(--card) 70%,transparent)}
+.tip small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.viz{width:100%;max-height:150px}
+.rail{position:absolute;right:22px;bottom:22px;display:flex;flex-direction:column;gap:12px;align-items:center;z-index:2}
+.rb{width:46px;height:46px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow)}
+.rb svg{width:22px;height:22px}
+.rb[aria-pressed="true"]{background:var(--pink);color:#fff;border-color:var(--pink)}
+.rl{font-size:10px;font-weight:700;margin-top:-8px;color:var(--ink2)}
+.nextfab{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);z-index:3;background:var(--pink);color:#fff;border:0;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;box-shadow:var(--shadow)}
+.swipehint{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:12px;font-weight:700;color:var(--ink2);animation:bob 1.4s ease-in-out infinite;pointer-events:none}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.opt{display:block;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:12px 14px;margin:8px 0;font-weight:600;font-size:16px}
+.opt:hover{border-color:var(--pink)}
+.opt.right{background:var(--goodSoft);border-color:var(--good)}
+.opt.wrong{background:var(--badSoft);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.fb{margin-top:6px;padding:10px 12px;border-radius:14px;font-weight:600;font-size:15px}
+.fb.ok{background:var(--goodSoft)}.fb.no{background:var(--badSoft)}
+.checkhead{display:flex;align-items:center;gap:8px}
+.badge{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--pink);color:#fff;border-radius:8px;padding:3px 8px}
+.conf{display:grid;gap:10px;margin-top:6px}
+.conf button{display:flex;align-items:center;gap:12px;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:12px;font-weight:700;text-align:left}
+.conf i{width:18px;height:18px;border-radius:50%;flex:none}
+.conf button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--gold)}
+
+/* SONGS */
+.songlist{display:grid;gap:12px}
+.song{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:10px;border:2px solid var(--line);border-radius:20px;background:var(--card)}
+.disc{flex:none;width:58px;height:58px;border-radius:50%;background:conic-gradient(from 20deg,var(--tc),var(--card),var(--tc),var(--card),var(--tc));border:3px solid var(--ink);position:relative}
+.disc::after{content:"";position:absolute;inset:22px;border-radius:50%;background:var(--bg);border:2px solid var(--ink)}
+.playing .disc{animation:spin 2.4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.player{position:absolute;inset:0;background:var(--bg);z-index:5;display:flex;flex-direction:column;padding:8px 16px 18px;gap:10px}
+.lyrics{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px 0}
+.ly{font-family:var(--display);font-size:clamp(22px,6vw,30px);line-height:1.1;opacity:.35;transition:opacity .2s,transform .2s;transform-origin:left}
+.ly.now{opacity:1;color:var(--pink);transform:scale(1.04)}
+.ly.hide span{filter:blur(8px)}
+.eq{display:flex;gap:4px;height:24px;align-items:flex-end}
+.eq i{width:5px;background:var(--pink);border-radius:2px;height:20%}
+.on .eq i{animation:eqb .6s ease-in-out infinite alternate}
+.eq i:nth-child(2n){animation-delay:.15s}.eq i:nth-child(3n){animation-delay:.3s}
+@keyframes eqb{to{height:100%}}
+
+/* GAMES */
+.gamecard{border:2px solid var(--line);background:var(--card);border-radius:20px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:120px}
+.gamecard b{font-family:var(--display);font-weight:400;font-size:18px;line-height:1.1}
+.gamecard span{font-size:14px;color:var(--ink2)}
+.gamecard svg{width:30px;height:30px;color:var(--pink)}
+.back{border:0;background:none;font-weight:700;color:var(--pink);padding:6px 0;display:inline-flex;gap:4px;align-items:center}
+.stage{margin-top:10px;display:flex;flex-direction:column;gap:12px}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--pink);transition:width .3s}
+.big{font-family:var(--display);font-size:34px;line-height:1.1}
+.mono{font-family:var(--mono)}
+.seq{display:flex;gap:6px;flex-wrap:wrap}
+.base{width:46px;height:52px;border-radius:12px;display:grid;place-items:center;font-family:var(--mono);font-weight:500;font-size:22px;border:2px solid var(--ink);background:var(--card)}
+.base.A{background:#FFC2DE;color:#3A0B26}.base.T,.base.U{background:#FFE08A;color:#3A0B26}.base.C{background:#D9C2FF;color:#3A0B26}.base.G{background:#BDEFD5;color:#3A0B26}
+.base.empty{border-style:dashed;background:transparent;color:var(--ink2)}
+.keypad{display:flex;gap:8px;flex-wrap:wrap}
+.keypad .btn{min-width:56px}
+.swipe{position:relative;height:260px;touch-action:pan-y}
+.sc{position:absolute;inset:0;border-radius:26px;border:2px solid var(--pink);background:linear-gradient(160deg,color-mix(in srgb,var(--pink) 18%,var(--card)),var(--card));padding:22px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--display);font-size:24px;line-height:1.15;box-shadow:var(--shadow);cursor:grab;user-select:none}
+.sc.next{transform:scale(.95) translateY(10px);opacity:.7;pointer-events:none}
+.stamp{position:absolute;top:14px;font-family:var(--display);font-size:20px;border:3px solid;border-radius:10px;padding:2px 8px;opacity:0}
+.stamp.l{left:14px;color:var(--bad);transform:rotate(-12deg)}.stamp.r{right:14px;color:var(--good);transform:rotate(12deg)}
+.chipbtn{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:10px 12px;font-weight:600;text-align:left}
+.chipbtn.sel{border-color:var(--pink);background:color-mix(in srgb,var(--pink) 14%,var(--card))}
+.chipbtn.ok{border-color:var(--good);background:var(--goodSoft)}.chipbtn.bad{border-color:var(--bad);background:var(--badSoft)}
+.mem{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mc{min-height:76px;border-radius:14px;border:2px solid var(--pink);background:var(--pink);color:transparent;font-weight:700;font-size:14px;padding:6px;display:grid;place-items:center;text-align:center;line-height:1.15}
+.mc.up{background:var(--card);color:var(--ink)}
+.mc.done{background:var(--goodSoft);color:var(--ink);border-color:var(--good)}
+.punn{display:grid;grid-template-columns:44px 1fr 1fr;gap:6px;max-width:320px}
+.punn .h{display:grid;place-items:center;font-family:var(--mono);font-weight:500}
+.punn .cell{min-height:60px;border-radius:12px;border:2px dashed var(--ink2);background:var(--card);font-family:var(--mono);font-size:18px;font-weight:500}
+.punn .cell.ok{border:2px solid var(--good);background:var(--goodSoft)}.punn .cell.bad{border:2px solid var(--bad);background:var(--badSoft)}
+.bark{position:relative;height:250px;border-radius:20px;overflow:hidden;border:2px solid var(--ink);touch-action:manipulation}
+.moth{position:absolute;width:26px;height:16px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;border:0;padding:0;box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.moth.dk{background:#241319}.moth.lt{background:#F4E8DE}
+.pond{width:100%;height:auto;border-radius:20px;background:color-mix(in srgb,var(--pink2) 25%,var(--card));border:2px solid var(--line)}
+.field{width:100%;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:12px;font:inherit}
+
+/* QUIZ / TEACH / ME */
+.qtop{display:flex;align-items:center;gap:10px}
+.scoreRing{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--pink) var(--p,0%),var(--line) 0);position:relative;margin:6px auto}
+.scoreRing::after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--bg)}
+.scoreRing b{position:relative;z-index:1;font-family:var(--display);font-weight:400;font-size:28px}
+.steps{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.step{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:4px;position:relative}
+.step b{font-family:var(--display);font-weight:400;font-size:18px}
+.step span{font-size:13px;color:var(--ink2)}
+.step[aria-pressed="true"]{border-color:var(--pink);box-shadow:0 0 0 2px var(--pinkSoft)}
+.step .done{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--good);color:#fff;display:none;place-items:center}
+.step.isdone .done{display:grid}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow-y:auto;padding:4px 0}
+.msg{max-width:88%;padding:10px 13px;border-radius:18px;font-size:16px;white-space:pre-wrap}
+.msg.c{background:var(--card);border:2px solid var(--line);border-bottom-left-radius:6px;align-self:flex-start}
+.msg.u{background:var(--pink);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+.pt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:var(--card);width:100%;text-align:left;margin:6px 0}
+.pt .dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--pink);display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
+.pt.hit{border-color:var(--good);background:var(--goodSoft)}
+.pt.hit .dot{background:var(--good);border-color:var(--good);color:#fff}
+.pt.miss{border-color:var(--pink);background:color-mix(in srgb,var(--pink) 10%,var(--card))}
+.timer{font-family:var(--mono);font-size:44px;font-weight:500;font-variant-numeric:tabular-nums}
+.mast{display:flex;align-items:center;gap:10px;margin:4px 0}
+.mast .lab{width:112px;font-weight:600;font-size:14px;flex:none}
+.mast .bar{flex:1}
+.toast{position:absolute;left:50%;top:60px;transform:translate(-50%,-20px);background:var(--ink);color:var(--bg);font-weight:700;padding:8px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:all .25s;z-index:30;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.spark{position:absolute;width:10px;height:10px;border-radius:50%;pointer-events:none;z-index:40}
+.note{font-size:14px;color:var(--ink2)}
+.hr{height:2px;background:var(--line);border:0;margin:14px 0}
+@media (min-width:900px){
+  body{background:linear-gradient(135deg,var(--bg2),var(--bg))}
+  #app{max-width:1180px;display:grid;grid-template-columns:210px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"top top" "nav view"}
+  .top{grid-area:top;padding:14px 24px 8px}.logo{font-size:28px}
+  #view{grid-area:view;min-height:0}
+  .tabs{grid-area:nav;grid-template-columns:1fr;grid-auto-rows:min-content;align-content:start;gap:6px;padding:12px;border-top:0;border-right:2px solid var(--line)}
+  .tab{flex-direction:row;gap:12px;font-size:16px;padding:12px 14px;justify-content:flex-start}
+  .panel{padding:12px 32px 40px}
+  .panel{display:flex;flex-direction:column;align-items:center}
+  .panel>*{width:100%;max-width:780px;flex:none}
+  .panel .grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  .feedwrap{max-width:520px;margin:0 auto;left:0;right:0}
+  .player{padding:12px calc((100% - 720px)/2) 24px}
+  .toast{top:70px}
+  h2{font-size:32px}
+}
+@media (min-width:900px) and (max-height:700px){.slidein{padding-top:14px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<div id="app" aria-live="off"></div>
+<script>
+/* ===== CONTENT: scope follows IEB Grade 12 SAG + Mind the Gap + IEB papers ===== */
+// Q format: [question, correct, [wrong,wrong,wrong], why]
+const TOPICS = [
+{id:"dna",name:"DNA & Protein Synthesis",short:"DNA & RNA",c:"--t1",
+reels:[
+["DNA is the instruction manual for you","DNA sits on **chromosomes** in the nucleus. A **gene** is a section of DNA that codes for a protein. Proteins build your body and run your cells.","Gene → protein → trait.","flow"],
+["Who cracked the code?","Many scientists helped. Franklin and Wilkins made X-ray images, Chargaff found that A = T and C = G, and **Watson and Crick** built the double helix model in **1953**. In the 1960s others worked out how DNA copies itself and how proteins are made.","Competition and teamwork both drive science."],
+["A nucleotide has 3 parts","One **phosphate**, one **sugar** (deoxyribose) and one **nitrogenous base**. Join many nucleotides and you get a DNA strand. Two strands twist into a **double helix**.","P - S - B: Phosphate, Sugar, Base."],
+["The 4 bases and their partners","**Adenine** pairs with **Thymine**. **Cytosine** pairs with **Guanine**. Hydrogen bonds hold the two strands together.","A-T and C-G: Apple Tree, Car Garage.","pairs"],
+["DNA vs RNA","RNA is **single stranded**, has ribose sugar and uses **Uracil (U)** instead of Thymine. Know two types: **mRNA** (carries the message) and **tRNA** (brings amino acids).","RNA says U, never T."],
+["Mitochondrial DNA is mum-only","Mitochondria have their own small DNA. It is passed on **only from the mother** and stays unaltered from mother to child, so it is used to work out how closely people are related.","Mito = Mum."],
+["Transcription: DNA to mRNA","Happens in the **nucleus**. The enzyme **RNA polymerase** unzips the DNA and builds a matching **mRNA** strand (A pairs with U). The mRNA leaves through a nuclear pore.","Transcribe = copy in the same language (nucleic acid)."],
+["Translation: mRNA to protein","Happens at the **ribosome** in the cytoplasm. Every 3 bases on mRNA is a **codon**. A **tRNA** with the matching **anticodon** brings the right amino acid. Amino acids join to make a protein.","Translate = change language: bases to amino acids."],
+["Mutations are typos","**Substitution**: one base swapped (point mutation). **Insertion** or **deletion**: a base is added or lost, which shifts the reading frame (**frameshift**) so every codon after it changes. Causes: mutagens (radiation, chemicals) or chance.","Frameshift = everything after it is wrong."],
+["DNA fingerprints","**Highly variable, non-coding DNA** differs from person to person. **PCR** makes many copies of a tiny sample so it can be tested. Used for crime scenes, relatedness tests, identifying remains and tracing illegal timber.","Non-coding = the part that varies most."]
+],
+checks:[
+["Which base replaces thymine in RNA?","Uracil",["Adenine","Cytosine","Guanine"],"RNA uses uracil (U) where DNA has thymine (T)."],
+["DNA template: T A C  G G A. What is the mRNA?","A U G  C C U",["A T G  C C T","U A C  G G A","A U G  G G A"],"Pair each base: T→A, A→U, C→G, G→C, G→C, A→U."],
+["Why is a deletion usually worse than a substitution?","It shifts the reading frame so every codon after it changes",["It changes the sugar in the nucleotide","It makes the DNA single stranded","It stops ribosomes from existing"],"A frameshift changes all the codons after the deleted base."]
+],
+quiz:[
+["Where does transcription take place?","Nucleus",["Ribosome","Cell membrane","Lysosome"],"DNA stays in the nucleus, so mRNA is made there."],
+["Which enzyme builds the mRNA strand?","RNA polymerase",["Ligase","Restriction enzyme","Amylase"],"RNA polymerase unzips DNA and joins RNA nucleotides."],
+["The three bases on tRNA that match an mRNA codon are the…","Anticodon",["Codon","Gene","Nucleotide"],"Anticodon on tRNA pairs with the codon on mRNA."],
+["What is the complementary DNA strand of A A G C T?","T T C G A",["U U C G A","A A G C T","T T G C A"],"A→T, A→T, G→C, C→G, T→A."],
+["Which is NOT found in RNA?","Thymine",["Uracil","Adenine","Ribose sugar"],"Thymine is replaced by uracil in RNA."],
+["Why is mitochondrial DNA useful for tracing relatedness?","It comes only from the mother and stays unaltered",["It comes only from the father","It changes completely every generation","It is only found in sperm"],"Maternal line, unaltered, so relatives share it."],
+["Which process happens at the ribosome?","Translation",["Transcription","DNA replication","Crossing over"],"Ribosomes read mRNA codons to build proteins."]
+],
+concepts:[
+{t:"Structure of DNA and RNA",say:"Explain what DNA and RNA are made of and how they are different.",pts:[
+["A nucleotide = phosphate + sugar + nitrogenous base",["phosphate","sugar"]],
+["Four bases (A, T, C, G); A pairs with T and C pairs with G",["adenine","thymine","complement","pair","a with t","c with g"]],
+["DNA is double stranded and found in the nucleus on chromosomes (mtDNA is in mitochondria, from mum)",["double","helix","nucleus","chromosome","mitochond"]],
+["RNA is single stranded and has uracil instead of thymine",["uracil","single"]],
+["Two types of RNA you need: mRNA and tRNA",["mrna","trna"]]]},
+{t:"Protein synthesis",say:"Explain how a gene becomes a protein, from DNA to amino acid chain.",pts:[
+["Transcription happens in the nucleus",["nucleus"]],
+["RNA polymerase unzips the DNA and builds mRNA from it",["polymerase","unzip","template"]],
+["mRNA travels to a ribosome in the cytoplasm",["ribosome","cytoplasm"]],
+["tRNA with an anticodon matches each mRNA codon and brings an amino acid",["trna","anticodon","codon"]],
+["Amino acids join to form the protein (translation)",["amino","protein","translation"]]]},
+{t:"Mutations and DNA profiling",say:"Explain the types of mutation and how DNA fingerprints are made and used.",pts:[
+["Substitution, insertion and deletion are the mutations you need",["substitution","insertion","deletion"]],
+["Insertion or deletion causes a frameshift, so all codons after it change",["frameshift","shift","reading frame"]],
+["Mutagens (radiation, chemicals) or chance cause mutations",["mutagen","radiation","chance","chemical"]],
+["DNA profiles use highly variable non-coding DNA",["non-coding","noncoding","variable","fingerprint","profile"]],
+["PCR makes copies of a tiny DNA sample",["pcr","copy","copies","amplif"]],
+["Uses: forensics, relatedness, identifying remains, tracing illegal timber",["forensic","crime","relat","remains","timber"]]]}
+]},
+
+{id:"meiosis",name:"Meiosis & Chromosomes",short:"Meiosis",c:"--t2",
+reels:[
+["Chromosomes: DNA, wrapped up","A **chromosome** is a tightly coiled DNA molecule in the nucleus. Before division, each chromosome copies itself into **two chromatids** joined at the **centromere**.","Chromatid = one copy. Joined copies = one chromosome."],
+["Haploid vs diploid","**Diploid (2n)** = two sets of chromosomes, one from each parent (human body cell: 46). **Haploid (n)** = one set (human gamete: 23). Fertilisation joins two haploid gametes and restores diploid.","n = half. 2n = full set."],
+["Where, when and why?","Meiosis happens in the **gonads** (testes and ovaries) in animals, and in the **anthers and ovules** of flowering plants. It makes gametes with half the chromosomes so the number stays constant after fertilisation, and it creates variation.","Meiosis = making gametes."],
+["Step zero: DNA replication","In **interphase** the DNA unzips and each strand is used as a template to build a new partner strand. Result: two identical DNA molecules, so each chromosome now has two chromatids.","Copy first, divide later."],
+["Meiosis I: the shuffle","**Prophase I**: homologous chromosomes pair up and **crossing over** swaps pieces. **Metaphase I**: pairs line up at the equator. **Anaphase I**: the pairs are pulled apart. **Telophase I**: two haploid cells.","Meiosis I separates the PAIRS."],
+["Meiosis II: like mitosis","**Prophase II, Metaphase II, Anaphase II** (chromatids separate), **Telophase II**. End result: **four haploid cells**, all genetically different.","Meiosis II separates the CHROMATIDS."],
+["Why are gametes all different?","**Crossing over** in prophase I and **random arrangement** of pairs in metaphase I shuffle the alleles. Random fertilisation adds even more variation.","Cross + Random = Variation."],
+["When meiosis goes wrong","**Non-disjunction**: chromosomes fail to separate, so a gamete has an extra or missing chromosome. **Down syndrome** is trisomy 21 (47 chromosomes). A **karyotype** is a picture of all the chromosomes in pairs, used to spot this.","Tri-somy = three copies."],
+["Mitosis vs meiosis","**Mitosis**: 1 division, 2 identical diploid cells, for growth and repair. **Meiosis**: 2 divisions, 4 different haploid cells, for gametes. Both start with DNA replication and both use the phases Prophase, Metaphase, Anaphase, Telophase.","Mitosis = Make copies. Meiosis = Make gametes."]
+],
+checks:[
+["How many cells, and what chromosome number, are made at the end of meiosis?","4 haploid cells",["2 haploid cells","4 diploid cells","2 diploid cells"],"Two divisions give four haploid cells."],
+["Which event in prophase I creates new combinations of alleles?","Crossing over",["Replication","Cytokinesis","Non-disjunction"],"Homologous chromosomes swap pieces during crossing over."],
+["A karyotype shows three copies of chromosome 21. Which condition is this?","Down syndrome",["Haemophilia","Colour blindness","Klinefelter syndrome"],"Trisomy 21 is Down syndrome."]
+],
+quiz:[
+["How many chromosomes are in a human sperm cell?","23",["46","44","92"],"Gametes are haploid: half of 46."],
+["During which phase do homologous chromosomes separate?","Anaphase I",["Anaphase II","Prophase I","Telophase II"],"Anaphase I pulls apart the pairs; anaphase II pulls apart chromatids."],
+["Failure of chromosomes to separate is called…","Non-disjunction",["Crossing over","Replication","Fertilisation"],"It leads to gametes with the wrong chromosome number."],
+["Which is a difference between meiosis and mitosis?","Meiosis has two divisions, mitosis has one",["Mitosis makes haploid cells","Meiosis makes identical cells","Mitosis happens only in gonads"],"Meiosis: 2 divisions, 4 haploid cells."],
+["Where does meiosis take place in flowering plants?","Anthers and ovules",["Roots and stems","Leaves","Petals and sepals"],"Gametes form in the anther (pollen) and ovule (egg)."],
+["Why is meiosis necessary for sexual reproduction?","It keeps the chromosome number constant across generations",["It makes identical offspring","It repairs damaged tissue","It doubles the chromosome number"],"Without halving, numbers would double each generation."],
+["When do chromatids separate?","Anaphase II",["Prophase I","Metaphase I","Anaphase I"],"In meiosis II the chromatids are pulled apart."]
+],
+concepts:[
+{t:"Meiosis step by step",say:"Walk through meiosis from one diploid cell to the final cells.",pts:[
+["DNA replicates in interphase before meiosis starts",["replicat","interphase","copy","copies"]],
+["Meiosis I: homologous chromosomes pair up, cross over, then the pairs separate",["homolog","crossing","cross over","pair"]],
+["Meiosis II: chromatids separate",["chromatid"]],
+["Result: four haploid cells",["four","4 ","haploid"]],
+["Phases named: prophase, metaphase, anaphase, telophase",["prophase","metaphase","anaphase","telophase"]]]},
+{t:"Why meiosis matters",say:"Explain why meiosis is needed and what happens when it goes wrong.",pts:[
+["Haploid (n, 23) vs diploid (2n, 46)",["haploid","diploid","23","46"]],
+["Keeps the chromosome number constant after fertilisation",["constant","fertilis","restore","same number"]],
+["Variation comes from crossing over and random arrangement",["variation","crossing","random"]],
+["Happens in gonads (testes, ovaries) and in anthers and ovules",["testes","ovar","anther","ovule","gonad"]],
+["Non-disjunction causes conditions such as Down syndrome; karyotypes show it",["non-disjunction","nondisjunction","down","trisomy","karyotype"]]]}
+]},
+
+{id:"genetics",name:"Genetics & Inheritance",short:"Genetics",c:"--t3",
+reels:[
+["Mendel and his peas","Mendel crossed pea plants and counted large numbers of offspring (a **big sample** gives more reliable results). He deduced that traits are controlled by **factors in pairs**, now called genes. His work was first ignored, then later shaped genetics.","Bigger sample = more accurate ratios."],
+["Words you must know","**Gene**: unit of inheritance at a **locus** on a chromosome. **Allele**: a version of a gene. **Genotype**: the alleles you have. **Phenotype**: what you look like. **Homozygous**: two same alleles. **Heterozygous**: two different alleles (a hybrid). **Dominant** shows when present; **recessive** only shows when homozygous.","Geno = Genes. Pheno = Physical."],
+["P, F1 and F2","**P** = parent generation. **F1** = first filial generation (their offspring). **F2** = offspring of the F1. Each gamete carries **one allele** of each gene.","Filial = offspring."],
+["Monohybrid cross recipe","1) Write the key (T = tall, t = short). 2) Parent genotypes. 3) Gametes. 4) Punnett square. 5) State genotype ratio and phenotype ratio. **Tt × Tt** gives 1 TT : 2 Tt : 1 tt and **3 tall : 1 short**.","Expected ratio is a prediction; real results only come close with large samples.","punnett"],
+["Who decides the sex?","Humans have 22 pairs of **autosomes** and 1 pair of **gonosomes** (sex chromosomes). **XX = female, XY = male**. The father's sperm decides: 50% chance of a boy or a girl.","Dad's sperm carries X or Y."],
+["Sex-linked traits","Genes for **haemophilia** and **red-green colour blindness** sit on the **X chromosome**. The Y has no matching allele, so a male with one recessive allele shows the trait. Females need two. A carrier female is X^H X^h.","Males have only one X, so no back-up allele."],
+["Reading pedigrees","Squares = males, circles = females, shaded = has the trait. Two unaffected parents with an affected child means the trait is **recessive** and both parents are **carriers**.","Skip a generation? Think recessive."],
+["Continuous traits","Continuous characteristics (like height) show a full range of values rather than a few clear groups. They tend to be **polygenic**, so many genes work together.","Continuous = a smooth range."],
+["Mutations and variation","A **gene mutation** makes a new allele. It can be **harmful, beneficial or neutral**. Mutagens (UV, X-rays, chemicals) or copying errors cause them. Mutations are the raw material for variation.","Mutation = new allele."],
+["Human Genome Project","The **HGP** mapped and sequenced all the human genes (completed in 2003). It helps to find genes for disorders and develop treatments, and it raises ethical questions about privacy and discrimination.","Big science, big ethics."]
+],
+checks:[
+["Tt × tt. What is the chance of a short (tt) offspring?","50%",["25%","75%","0%"],"Gametes T,t × t,t gives Tt, Tt, tt, tt: half are short."],
+["Why are males more often affected by X-linked recessive conditions?","They have only one X chromosome",["They have two X chromosomes","The Y chromosome carries the allele","They get the allele from the father only"],"No second X means no dominant allele to mask it."],
+["Two unaffected parents have an affected child. The trait is…","Recessive",["Dominant","Y-linked","Polygenic"],"Both parents must be heterozygous carriers."]
+],
+quiz:[
+["Tt × Tt: what is the phenotype ratio?","3 tall : 1 short",["1 tall : 1 short","All tall","1 tall : 3 short"],"TT, Tt, Tt, tt gives 3 dominant : 1 recessive."],
+["What is an allele?","One version of a gene",["A type of chromosome","A change in the sex of a child","A sex cell"],"Alleles are alternative forms of a gene at the same locus."],
+["Which describes a heterozygous genotype?","Tt",["TT","tt","XX"],"Two different alleles."],
+["A woman is XH Xh and her partner is XH Y. What fraction of their sons will have haemophilia?","1/2",["0","1/4","All of them"],"Sons get Y from dad and either XH or Xh from mum."],
+["Which pair of chromosomes decides sex in humans?","Gonosomes",["Autosomes","Chromatids","Centromeres"],"Gonosomes are the sex chromosomes X and Y."],
+["Why did Mendel use large numbers of pea plants?","A bigger sample gives more accurate ratios",["Peas are always heterozygous","To avoid using Punnett squares","Because peas have sex chromosomes"],"Small samples can give ratios that are far from expected."],
+["A phenotype is…","What the organism looks like",["The alleles it carries","The chromosome number","A change in DNA"],"Genotype is the alleles; phenotype is the visible result."]
+],
+concepts:[
+{t:"Key terms and monohybrid crosses",say:"Explain gene, allele, genotype, phenotype and how to work out a monohybrid cross.",pts:[
+["A gene is a unit of inheritance on a chromosome; alleles are versions of it",["gene","allele","locus"]],
+["Genotype is the alleles you carry; phenotype is how you look",["genotype","phenotype"]],
+["Homozygous = same alleles, heterozygous = different (hybrid)",["homozygous","heterozygous","hybrid"]],
+["Dominant shows if present; recessive only if homozygous",["dominant","recessive"]],
+["Steps: key, parents, gametes, Punnett square, ratios (Tt × Tt = 3:1)",["punnett","gametes","3:1","3 to 1","ratio","key"]]]},
+{t:"Sex, sex-linkage and pedigrees",say:"Explain how sex is inherited, why some conditions are sex-linked, and how to read a pedigree.",pts:[
+["XX is female and XY is male; the father decides the sex",["xx","xy","father","sperm"]],
+["Autosomes are the 22 pairs; gonosomes are the sex chromosomes",["autosome","gonosome"]],
+["Haemophilia and colour blindness are on the X chromosome",["haemophilia","hemophilia","colour blind","color blind","x chromosome"]],
+["Males show it with one recessive allele; females need two; carriers exist",["carrier","one x","only one","two","male"]],
+["Pedigree: two unaffected parents with an affected child means recessive carriers",["pedigree","carrier","recessive","shaded"]]]}
+]},
+
+{id:"engineering",name:"Genetic Engineering",short:"Gene Tech",c:"--t4",
+reels:[
+["Genetic engineering 101","Changing an organism's DNA by **adding, modifying or deleting** genes. **Recombinant DNA** = DNA from two sources joined. **Transgenic** = an organism carrying a gene from another species. **GMO** = genetically modified organism. **Biotechnology** = using living things to make products.","Recombine = mix. Transgenic = trans-species."],
+["Molecular scissors and glue","**Restriction enzymes** cut DNA at specific sequences. **Ligase** joins DNA pieces together. Together they cut a gene out and paste it into a new piece of DNA.","Restriction = cut. Ligase = stick."],
+["Bacteria that make insulin","The human **insulin gene** is cut out, then pasted into a bacterial **plasmid** (a vector) and put back in bacteria. The bacteria divide quickly and make human insulin in bulk for people with diabetes.","Plasmid = delivery vehicle."],
+["Gene therapy","Fixing the **cause** of a genetic disorder by putting a healthy gene into a patient's cells. A **bacterial or viral vector** carries the gene in.","Treats the cause, not just the symptoms."],
+["GMO crops and polyploids","Crops can get genes for pest resistance, drought tolerance or extra nutrients. **Plant tissue culture** grows many identical plants from tiny pieces. **Polyploid** plants have extra sets of chromosomes and are often bigger.","Poly = many sets."],
+["Cloning an animal: SCNT","**Somatic cell nuclear transfer**: take the nucleus from a **donor's** body cell, put it into an egg whose nucleus was removed, let it divide into an **embryo**, then place it in a **surrogate** mother. The clone is genetically identical to the donor.","Dolly the sheep was the first mammal cloned this way."],
+["Artificial selection and hybrid vigour","In **artificial selection** humans choose which organisms breed (dairy cows, maize, dogs). It mimics natural selection. **Hybrid vigour**: cross-bred offspring are often healthier and more resilient than inbred ones.","Humans choose = artificial."],
+["CRISPR: editing genes","A tool that can **cut and change DNA at exact spots**. Hopes: repair mutated genes, stop malaria-carrying mosquitoes breeding. Concerns: ethics of editing human genes, who can afford it, long-term effects.","Edit, don't just cut and paste."],
+["Debate time","Things to weigh up: GMO **labelling**, **monocultures**, multinational companies controlling seeds, biosecurity, and **indigenous knowledge** (people have bred crops for thousands of years). Always ask if a source is credible and objective.","Good scientists check their sources."]
+],
+checks:[
+["Which enzyme cuts DNA at a specific sequence?","Restriction enzyme",["Ligase","RNA polymerase","Amylase"],"Restriction enzymes are the scissors; ligase is the glue."],
+["Which technique makes a clone from a donor's body cell?","SCNT (somatic cell nuclear transfer)",["PCR","Pollination","Gel electrophoresis"],"The donor nucleus is transferred into an enucleated egg."],
+["A transgenic organism is one that…","Carries a gene from another species",["Has extra chromosome sets","Is cloned","Has no DNA"],"Trans = across species."]
+],
+quiz:[
+["What is recombinant DNA?","DNA from two different sources joined together",["DNA that has been copied by PCR","RNA copied from DNA","DNA with a mutation"],"Pieces are cut and joined, often with a plasmid."],
+["Which enzyme joins DNA fragments?","Ligase",["Restriction enzyme","Polymerase","Protease"],"Ligase seals the pieces."],
+["Why are bacteria used to make human insulin?","They reproduce fast and can carry the human gene on a plasmid",["They already make human insulin","They have human chromosomes","They cannot mutate"],"Rapid division = lots of insulin."],
+["In SCNT, which cell provides the nucleus?","A donor's somatic cell",["A sperm","A surrogate's egg","A stem cell from the embryo"],"The nucleus comes from a body (somatic) cell."],
+["What is hybrid vigour?","Cross-bred offspring being stronger or more resilient",["Offspring being identical to parents","Offspring that cannot reproduce","A mutation caused by radiation"],"Heterozygosity gives an advantage."],
+["Which is a concern about GMO crops?","Reliance on monocultures and large companies",["They have no DNA","They cannot grow","They always die out"],"Debate topics in the curriculum include monocultures and multinationals."]
+],
+concepts:[
+{t:"How genetic engineering works",say:"Explain how a gene is moved from one organism to another to make something like insulin.",pts:[
+["Terms: genetic engineering, recombinant DNA, transgenic, GMO, biotechnology",["recombinant","transgenic","gmo","biotechnology"]],
+["Restriction enzymes cut the gene out; ligase joins it into the plasmid",["restriction","ligase","cut","join"]],
+["A bacterial plasmid acts as a vector carrying the gene into bacteria",["plasmid","vector"]],
+["Bacteria multiply and make the product, e.g. insulin",["insulin","bacteria","divide","multiply"]],
+["Gene therapy uses a bacterial or viral vector to correct a disorder",["gene therapy","viral","correct"]]]},
+{t:"Cloning and selective breeding",say:"Explain animal cloning, plant cloning, and artificial selection.",pts:[
+["SCNT: donor somatic cell nucleus goes into an egg with its nucleus removed",["scnt","nucleus","somatic","donor","egg"]],
+["Embryo is placed in a surrogate; clone is identical to the donor",["embryo","surrogate","identical"]],
+["Plant tissue culture clones plants from small pieces",["tissue culture","tissue","plant clon"]],
+["Artificial selection: humans choose which organisms breed",["artificial","choose","selective","breed"]],
+["Hybrid vigour: cross-bred offspring are more resilient",["hybrid","vigour","vigor","resilien"]]]}
+]},
+
+{id:"endocrine",name:"Endocrine System & Homeostasis",short:"Hormones",c:"--t5",
+reels:[
+["Hormones = chemical messengers","Made by **endocrine glands** (no ducts), released straight into the **blood** and carried to **target organs**. Slower than nerves, but the effect lasts longer.","Endo = inside the body."],
+["Who makes what?","**Hypothalamus**: ADH. **Pituitary**: TSH, FSH, LH, growth hormone. **Thyroid**: thyroxin. **Pancreas**: insulin and glucagon. **Adrenal**: adrenalin. **Gonads**: testosterone, oestrogen, progesterone. Also **oxytocin** and **prolactin**.","Learn each hormone with its gland."],
+["Blood glucose loop","**High** glucose → pancreas releases **insulin** → liver turns glucose into glycogen and cells take it up → glucose falls. **Low** glucose → **glucagon** → liver breaks glycogen into glucose → glucose rises.","Insulin lowers. Glucagon raises.","loop"],
+["Negative feedback","**Homeostasis** keeps the internal environment stable. A change is detected, a response **reverses** it and the system returns to its set point. Examples: blood glucose, and FSH/LH with oestrogen/progesterone.","Negative = reverses the change."],
+["Adrenalin: fight or flight","The **adrenal glands** release **adrenalin** when you are scared or stressed. Heart rate and breathing go up, glucose is released and more blood goes to the muscles.","Adrenalin = action stations."],
+["Thyroxin and growth hormone","**Thyroxin** controls metabolic rate; **TSH** from the pituitary tells the thyroid to make it. Too little causes hypothyroidism, a lack of iodine can cause goitre, too much is hyperthyroidism. **Growth hormone**: too little as a child gives dwarfism, too much gives gigantism.","Think: metabolism speed and body size."],
+["ADH: water balance","The **hypothalamus** detects low water in the blood. ADH is released and makes the **kidneys** reabsorb more water, so urine is more concentrated.","ADH = Anti-Dry Hormone."],
+["Diabetes","**Type 1**: the pancreas makes little or no insulin. **Type 2**: cells stop responding to insulin. Blood glucose stays too high. Managed with diet, exercise and insulin injections (made by engineered bacteria).","Link: diabetes + genetic engineering."]
+],
+checks:[
+["Which hormone lowers blood glucose?","Insulin",["Glucagon","Adrenalin","Thyroxin"],"Insulin moves glucose into cells and liver stores it as glycogen."],
+["Low blood glucose causes the pancreas to release…","Glucagon",["Insulin","ADH","Oestrogen"],"Glucagon makes the liver release glucose."],
+["Which gland releases TSH?","Pituitary",["Thyroid","Adrenal","Pancreas"],"TSH from the pituitary stimulates the thyroid."]
+],
+quiz:[
+["What is the target organ of ADH?","Kidney",["Liver","Heart","Ovary"],"ADH increases water reabsorption in the kidney."],
+["What is stored in the liver after insulin acts?","Glycogen",["Glucagon","Thyroxin","Starch"],"Glucose is converted to glycogen."],
+["What is negative feedback?","A response that reverses a change and restores the set point",["A response that increases the change","A hormone that never stops being released","A nerve impulse"],"It keeps conditions stable."],
+["Which hormone controls metabolic rate?","Thyroxin",["Insulin","ADH","Prolactin"],"Thyroxin is made by the thyroid gland."],
+["Which gland makes both insulin and glucagon?","Pancreas",["Pituitary","Thyroid","Adrenal"],"The pancreas is an endocrine gland for glucose control."],
+["Which hormone prepares the body for fight or flight?","Adrenalin",["Oxytocin","Prolactin","Progesterone"],"Adrenal glands release adrenalin."]
+],
+concepts:[
+{t:"Glands and their hormones",say:"Name the endocrine glands and the hormones each makes, and what hormones are.",pts:[
+["Hormones are chemical messengers carried in the blood to target organs",["messenger","blood","target"]],
+["Hypothalamus: ADH; pituitary: TSH, FSH, LH, growth hormone",["adh","tsh","fsh","growth hormone","pituitary","hypothalamus"]],
+["Thyroid: thyroxin; pancreas: insulin and glucagon; adrenal: adrenalin",["thyroxin","insulin","glucagon","adrenalin","adrenaline"]],
+["Gonads: testosterone, oestrogen, progesterone (plus oxytocin and prolactin)",["testosterone","oestrogen","estrogen","progesterone","oxytocin","prolactin"]],
+["Disorders: diabetes, thyroid problems, growth disorders",["diabetes","goitre","hypothyroid","gigantism","dwarfism","thyroid disorder"]]]},
+{t:"Negative feedback and blood glucose",say:"Explain homeostasis and how blood glucose is kept stable.",pts:[
+["Homeostasis keeps the internal environment stable",["homeostasis","stable","constant"]],
+["Negative feedback: a change triggers a response that reverses it",["negative feedback","reverse","opposite","set point"]],
+["High glucose: pancreas releases insulin; liver stores glycogen; glucose falls",["insulin","glycogen","high"]],
+["Low glucose: pancreas releases glucagon; liver releases glucose; glucose rises",["glucagon","low"]],
+["Diabetes: not enough insulin or cells stop responding",["diabetes","type 1","type 2"]]]}
+]},
+
+{id:"humanrep",name:"Human Reproduction",short:"Human Repro",c:"--t6",
+reels:[
+["Male system tour","**Testes** (in the scrotum) make sperm in the **seminiferous tubules** (germinal epithelium, by meiosis) and make testosterone. **Epididymis** stores sperm, **sperm duct** carries it, **prostate gland** and **seminal vesicles** add fluid to form **semen**. The urethra runs through the **penis**.","Sperm is the cell. Semen is the fluid mix."],
+["Sperm structure","**Head** with the nucleus and an **acrosome** (enzymes to enter the egg). **Middle piece** packed with **mitochondria** for energy. **Tail** for swimming. Erection = penis fills with blood. Ejaculation = semen is expelled.","Head, Middle, Tail: Info, Energy, Move."],
+["Female system tour","**Ovaries** hold follicles, make eggs, oestrogen and progesterone. **Oviduct** carries the egg and is where **fertilisation** happens. **Uterus** has the **endometrium** (lining). **Cervix** is the opening. **Vagina** is the birth canal.","Egg path: ovary → oviduct → uterus."],
+["The menstrual cycle","**FSH** grows a follicle which makes **oestrogen**, so the endometrium thickens. An oestrogen peak triggers an **LH surge** and **ovulation** (mid-cycle). The empty follicle becomes the **corpus luteum** and makes **progesterone**. No pregnancy: progesterone drops and **menstruation** starts.","FSH grows. LH launches. Progesterone protects.","cycle"],
+["Feedback in the cycle","High **oestrogen and progesterone** inhibit **FSH and LH** (negative feedback). That is why no new follicle develops while progesterone is high during pregnancy.","Feedback links the endocrine and reproductive topics."],
+["Fertilisation and implantation","Fertilisation happens in the **oviduct**. The **zygote** divides by **mitosis** into an **embryo**, which **implants** in the endometrium. Later it is called a **foetus**.","Zygote → embryo → foetus."],
+["Life support: placenta and friends","The **placenta** lets oxygen and nutrients move to the foetus and wastes move out (the bloods do not mix), and makes hormones. The **umbilical cord** connects them. The **amnion** holds **amniotic fluid** that cushions the foetus.","Placenta = exchange."],
+["Birth and milk","Hormone changes (including **oxytocin**) start contractions and birth. **Prolactin** makes the **mammary glands** produce milk, and oxytocin releases it.","Oxytocin pushes. Prolactin produces."],
+["Contraception","**Condom**: barrier, also protects against STIs. **Diaphragm**: barrier over the cervix. **Pill** and **injection**: hormones stop ovulation. **IUD**: prevents implantation. **Rhythm method**: avoid sex near ovulation, least reliable.","Barrier, Hormone, Device, Timing."],
+["Real-life links","Many partners raises the risk of **STIs** and **HIV**. Alcohol in pregnancy can cause **Foetal Alcohol Syndrome**. Debate topics: contraception and culture, infertility treatment, surrogacy, circumcision.","Biology meets ethics."]
+],
+checks:[
+["Where does fertilisation normally take place?","Oviduct",["Uterus","Ovary","Vagina"],"The egg meets sperm in the oviduct."],
+["Which hormone causes ovulation?","LH",["FSH","Progesterone","Prolactin"],"An LH surge triggers release of the egg."],
+["What does the corpus luteum secrete?","Progesterone",["FSH","LH","Testosterone"],"Progesterone maintains the endometrium."]
+],
+quiz:[
+["Where are sperm produced?","Seminiferous tubules",["Epididymis","Prostate gland","Sperm duct"],"Meiosis in the germinal epithelium makes sperm."],
+["What is the function of the acrosome?","Enzymes to penetrate the egg",["Provide energy","Make the tail move","Store the nucleus"],"It sits on the sperm head."],
+["Which hormone thickens the endometrium early in the cycle?","Oestrogen",["LH","Prolactin","ADH"],"Oestrogen from the growing follicle."],
+["What happens when progesterone levels fall at the end of the cycle?","Menstruation",["Ovulation","Fertilisation","Implantation"],"The endometrium breaks down."],
+["Which structure carries wastes and nutrients between mother and foetus?","Placenta",["Amnion","Cervix","Oviduct"],"Substances exchange across the placenta."],
+["Which hormone triggers milk release?","Oxytocin",["FSH","Insulin","Thyroxin"],"Prolactin makes the milk; oxytocin releases it."],
+["Which contraceptive also protects against STIs?","Condom",["Pill","IUD","Injection"],"Barrier methods stop the exchange of fluids."]
+],
+concepts:[
+{t:"The menstrual cycle",say:"Explain the hormones and events of the menstrual cycle in order.",pts:[
+["FSH from the pituitary makes a follicle grow",["fsh","follicle"]],
+["The follicle makes oestrogen; endometrium thickens",["oestrogen","estrogen","endometrium","lining"]],
+["LH surge causes ovulation about mid-cycle",["lh","ovulation","surge"]],
+["Corpus luteum makes progesterone, keeping the lining",["corpus luteum","progesterone"]],
+["No pregnancy: progesterone falls and menstruation happens; negative feedback controls FSH and LH",["menstruat","negative feedback","falls","drops"]]]},
+{t:"Fertilisation to birth",say:"Explain what happens from fertilisation until the baby is born.",pts:[
+["Fertilisation in the oviduct creates a zygote",["fertilis","oviduct","zygote"]],
+["Zygote divides by mitosis to an embryo that implants in the endometrium",["mitosis","embryo","implant"]],
+["Placenta exchanges oxygen, nutrients and wastes; umbilical cord links mother and foetus",["placenta","umbilical","exchange"]],
+["Amnion and amniotic fluid protect and cushion the foetus",["amnion","amniotic","cushion"]],
+["Birth is started by hormone changes (oxytocin); mammary glands make milk (prolactin)",["oxytocin","prolactin","mammary","contraction","labour","milk"]]]}
+]}
+];
+TOPICS.push(
+{id:"plantrep",name:"Plant & Animal Reproduction",short:"Reproduction",c:"--t7",
+reels:[
+["Asexual vs sexual","**Asexual**: one parent, no gametes, offspring are identical clones, fast (runners, tubers, cuttings). **Sexual**: two gametes fuse, offspring vary, slower but more adaptable.","Clone = copy. Sexual = mix."],
+["Parts of a flower","**Male**: stamen = **anther** (makes pollen grains with male gametes) on a **filament**. **Female**: **stigma** (catches pollen), **style**, **ovary** that holds **ovules** (each with an egg).","Stamen = male. Stigma = female."],
+["Pollination vs fertilisation","**Pollination** = pollen moves from anther to stigma (wind or insects). **Fertilisation** = a male gamete fuses with the egg in the ovule. After this the **ovule becomes a seed** and the **ovary becomes a fruit**.","Pollination is the delivery. Fertilisation is the fusion."],
+["Better crops","Crossing plants (sexual reproduction) makes new, improved varieties, including **polyploids** with bigger fruit. Asexual methods (cuttings, tissue culture) keep a good plant's traits. **Seed banks** protect biodiversity.","Sexual = new varieties. Asexual = keep the winner."],
+["r-strategists vs K-strategists","**r**: many offspring, little care, mature fast, short life, e.g. sea turtle. **K**: few offspring, lots of care, long life, near carrying capacity, e.g. elephant, lion. Survivorship curves show when individuals die.","r = rapid. K = keep and care."],
+["External vs internal fertilisation","**External** (fish, frogs): in water, lots of eggs, low survival of each. **Internal** (reptiles, birds, mammals): sperm placed inside the female, fewer eggs, better protection.","Internal = fewer but safer."],
+["Oviparous, ovoviviparous, viviparous","**Oviparous**: eggs laid and develop outside (birds). **Ovoviviparous**: eggs develop inside the mother, nourished by yolk (some sharks and snakes). **Viviparous**: embryo grows inside, fed through a placenta (mammals).","Ovi = egg. Vivi = alive."],
+["Egg shell, care and courtship","The **amniotic egg** has a shell and membranes that keep the embryo moist, so reptiles and birds can lay eggs on land. **Parental care** raises survival. **Courtship** helps animals find the right species and a good mate.","Protection raises survival."]
+],
+checks:[
+["After fertilisation, the ovary develops into a…","Fruit",["Seed","Pollen grain","Stigma"],"Ovule becomes the seed; ovary becomes the fruit."],
+["Which is an r-strategist?","Sea turtle",["Elephant","Lion","Human"],"Many offspring, little parental care."],
+["Pollination is the transfer of pollen from…","Anther to stigma",["Stigma to ovary","Ovary to anther","Style to ovule"],"Fertilisation happens later in the ovule."]
+],
+quiz:[
+["Which part of the flower receives pollen?","Stigma",["Anther","Filament","Ovule"],"The stigma is sticky to catch pollen."],
+["What is the main advantage of asexual reproduction?","Quick production of identical offspring",["High variation","Two parents needed","Gametes needed"],"No mating or gametes needed."],
+["Which animals give birth to live young nourished by a placenta?","Viviparous",["Oviparous","Ovoviviparous","Hermaphrodites"],"Viviparous = live birth with placenta."],
+["Which is an example of a K-strategist?","Elephant",["Frog","Sea turtle","Fish"],"Few young, high parental care."],
+["What does the amniotic egg allow?","Reproduction on land without drying out",["Reproduction in water only","Live birth","Pollination"],"Shell and membranes protect and keep moisture."],
+["What is a seed bank used for?","Protecting biodiversity",["Cloning animals","Making insulin","Polluting soil"],"Seeds stored for the future."]
+],
+concepts:[
+{t:"Flowering plant reproduction",say:"Explain asexual vs sexual reproduction in plants and how a flower makes seeds.",pts:[
+["Asexual: one parent, identical offspring; sexual: gametes fuse, variation",["asexual","sexual","identical","variation"]],
+["Male parts: stamen with anther and filament; pollen has male gametes",["anther","filament","stamen","pollen"]],
+["Female parts: stigma, style, ovary, ovule",["stigma","style","ovary","ovule"]],
+["Pollination is transfer of pollen; fertilisation is fusion of gametes",["pollination","fertilis"]],
+["Ovule becomes seed; ovary becomes fruit",["seed","fruit"]]]},
+{t:"Animal reproductive strategies",say:"Compare r and K strategies and the ways animals reproduce.",pts:[
+["r-strategists: many offspring, little care (turtle); K: few, lots of care (elephant)",["r-strateg","k-strateg","many","few","turtle","elephant"]],
+["External vs internal fertilisation",["external","internal"]],
+["Oviparous, ovoviviparous and viviparous",["oviparous","ovipar","vivipar"]],
+["Amniotic egg allows reproduction on land",["amniotic","shell","land"]],
+["Parental care and courtship improve survival",["parental","courtship"]]]}
+]},
+
+{id:"ecology",name:"Population & Community Ecology",short:"Ecology",c:"--t8",
+reels:[
+["From one animal to an ecosystem","**Individual** → **population** (one species, one place) → **community** (all the populations) → **ecosystem** (community + abiotic factors).","Zoom out one level at a time."],
+["What changes a population?","Population size = **births + immigration − deaths − emigration**. It rises and falls with seasons and resource supply.","In = births, immigration. Out = deaths, emigration."],
+["Limiting factors and carrying capacity","**Density-dependent** (competition, predation, disease) hit harder as numbers rise. **Density-independent** (fire, flood, drought) do not care. **Environmental resistance** slows growth until the population levels off at the **carrying capacity (K)**.","The S-curve flattens at K.","scurve"],
+["Counting wild animals: mark-recapture","Catch **M** animals, mark them, release them. Later catch **C** animals; **R** of them are marked. **N = (M × C) ÷ R**. Precautions: marks must be harmless, animals must mix, no big births/deaths/migration in between.","Try it in the Pond Count game!"],
+["Quadrats and census","**Quadrat**: count in random square samples, find the mean, then scale up to the whole area. **Census**: count every individual (only for small or easily seen populations). **Random sampling** avoids bias.","Quadrat = sample. Census = everyone."],
+["Predator-prey cycles","Lion – zebra, aphid – ladybird, shark – fish. Prey numbers rise, then predators rise (with a delay), prey fall, then predators fall. This **regulates both populations**.","Predator peak lags behind prey peak."],
+["Competition and niches","**Intraspecific**: same species. **Interspecific**: different species. A **niche** = the resources and conditions a species needs. Competition drives specialisation. **Resource partitioning** reduces it, e.g. forest trees using different heights, or lions and leopards hunting different prey.","Same niche = fight. Different niche = share."],
+["Ecological succession","**Primary**: a new bare habitat (rock, lava). **Pioneers** such as lichens arrive first, then mosses, grasses, shrubs, trees. **Secondary**: a disturbed habitat with soil left (after fire). It is faster. There are many possible end points.","Pioneers pave the way.","succ"],
+["Social organisation","**Herds/flocks** (zebra): many eyes spot predators. **Packs** (wild dogs): hunt together. **Dominant breeding pair** (wild dogs). **Castes** (termites): workers, soldiers, queen share the tasks.","Living together raises survival."],
+["Human population","Exponential growth due to better medicine, sanitation and food, lowering death rates. Age-sex graphs with a **wide base** show rapid growth. Footprint per person is bigger in the developed world.","Think: births vs deaths vs footprint."]
+],
+checks:[
+["20 fish are marked. A later catch of 30 has 6 marked. Estimate the population.","100",["50","180","120"],"N = (20 × 30) ÷ 6 = 100."],
+["A veld fire is which type of limiting factor?","Density-independent",["Density-dependent","Biotic","Intraspecific"],"Fire affects the population whatever the density."],
+["Which organisms arrive first in primary succession?","Pioneer species",["Climax trees","Large predators","Grasses"],"Lichens and mosses colonise bare rock."]
+],
+quiz:[
+["Which equation gives population change?","Births + immigration − deaths − emigration",["Births − immigration + deaths","Deaths + emigration","Immigration × births"],"Add what comes in, subtract what leaves."],
+["Which is a density-dependent factor?","Disease",["Fire","Flood","Drought"],"Disease spreads more easily when crowded."],
+["What does carrying capacity mean?","The largest population an environment can support",["The number of births per year","The number of predators","The speed of growth"],"Set by limiting resources."],
+["What is a niche?","The role and resources a species needs",["A place where it lives only","A food chain","A type of predator"],"Includes conditions and resources."],
+["What is the main feature of secondary succession?","It starts where soil already exists",["It starts on bare rock","It never ends","It has no pioneers"],"It follows disturbance such as fire."],
+["Why does a mark-recapture study need random sampling?","To avoid a biased estimate",["To kill fewer animals","To speed up marking","To count all individuals"],"Random sampling gives a representative sample."],
+["How do termites benefit from social organisation?","Division of tasks among castes",["Dominant breeding pair","Herds spotting predators","Packs hunting"],"Workers, soldiers and a queen."]
+],
+concepts:[
+{t:"Population size and sampling",say:"Explain what changes population size and how scientists estimate it.",pts:[
+["Births, immigration, deaths and emigration change the size",["birth","immigration","death","emigration"]],
+["Density-dependent vs density-independent limiting factors",["density-dependent","density dependent","density-independent","density independent"]],
+["Carrying capacity and environmental resistance",["carrying capacity","environmental resistance","limit"]],
+["Mark-recapture: N = M × C ÷ R, with precautions",["mark","recapture","m x c","m × c","divide","lincoln"]],
+["Quadrats and census; random sampling",["quadrat","census","random"]]]},
+{t:"Interactions and succession",say:"Explain how species interact and how a community changes over time.",pts:[
+["Predator-prey relationship regulates both populations",["predator","prey","regulat"]],
+["Intraspecific vs interspecific competition",["intraspecific","interspecific","same species","different species"]],
+["Niche and resource partitioning reduce competition",["niche","partition"]],
+["Primary vs secondary succession; pioneers",["primary","secondary","pioneer","lichen"]],
+["Social organisation: herds, packs, dominant pair, castes",["herd","flock","pack","dominant","caste","termite"]]]}
+]},
+
+{id:"evolution",name:"Evolution & Speciation",short:"Evolution",c:"--t9",
+reels:[
+["Lines of evidence","The theory of evolution is supported by the **fossil record**, **modification by descent**, **biogeography** and **genetics** (DNA similarities), as well as other evidence.","Many lines, one theory."],
+["Who's who","**Erasmus Darwin** and **Lamarck** had early ideas (Lamarck: acquired characteristics are inherited, which is wrong). **Charles Darwin** and **Alfred Wallace** independently proposed **natural selection**.","Darwin and Wallace: the selection duo."],
+["Natural selection in 5 steps","1) **Variation** exists. 2) More offspring are born than can survive. 3) **Struggle** for resources. 4) The **best adapted survive and reproduce**. 5) They pass on their **alleles**, so the population changes. Only **inherited** variation counts. Example: **peppered moth** in sooty Britain.","Vary, Compete, Survive, Reproduce, Repeat."],
+["Artificial selection","Humans pick which organisms breed (dogs, cattle, maize). It **mimics natural selection**, but the selector is human, not the environment.","Same idea, different selector."],
+["Where does variation come from?","**Mutations** (neutral, harmful or beneficial) and **genetic recombination** during meiosis and sexual reproduction. Mutations change genotype but may not show in the phenotype.","Mutation + recombination."],
+["What is a species?","A group of organisms with common ancestry that closely resemble each other and can **interbreed to produce viable (fertile) offspring**.","Can they breed fertile babies? Same species."],
+["Making new species","**Allopatric**: a barrier (mountain, river, continental drift) isolates populations, they face different selection pressures and eventually cannot interbreed. **Sympatric**: happens in the same area. Examples: **cichlids in Lake Malawi**, **Galapagos finches**.","Allo = other place. Sym = same place."],
+["Reproductive isolation","Barriers that stop species interbreeding: **different breeding seasons**, **species-specific courtship**, and in plants **different pollinators**.","Different time, dance or pollinator."],
+["Inbreeding, outbreeding, founder effect","**Inbreeding** raises homozygosity (more harmful recessives). **Outbreeding** promotes heterozygosity. **Founder effect**: a small group starts a new population with an unrepresentative gene pool, e.g. variegate porphyria in South Africans of Dutch descent.","Small start = skewed gene pool."],
+["Convergence and divergence","**Divergence**: related species become different (Galapagos finches). **Convergence**: unrelated species become similar because of similar environments (shark and dolphin shape).","Converge = come together."],
+["Pace of change","**Gradualism**: slow, steady change. **Punctuated equilibrium**: long stable periods broken by quick bursts. Cladograms show branching from common ancestors: closer branches mean closer relatives.","Read the branches: nearer = closer kin."],
+["Evolution happening now","Bacteria can evolve **antibiotic resistance** quickly. Resistant TB (MDR and XDR) has spread because resistant bacteria survive treatment, reproduce and pass on the resistance allele.","Evolution is not only in the past."]
+],
+checks:[
+["Natural selection acts on…","Inherited variation",["Learned behaviour","Acquired muscle","Only dominant alleles"],"Only heritable variation can be passed on."],
+["Which describes allopatric speciation?","Geographic isolation leads to species that cannot interbreed",["New species from the same area at once","Species from artificial selection","Species from cloning"],"A barrier stops gene flow."],
+["Why does antibiotic resistance spread?","Resistant bacteria survive and reproduce",["Bacteria learn to resist","Antibiotics cause the mutation on purpose","Doctors choose resistant bacteria"],"Selection pressure favours the resistant ones."]
+],
+quiz:[
+["Who proposed natural selection together with Darwin?","Alfred Wallace",["Gregor Mendel","Jean-Baptiste Lamarck","Rosalind Franklin"],"Both published in 1858."],
+["What is a species?","Organisms that can interbreed and produce viable offspring",["Any organisms that look similar","Organisms in the same habitat","A group with the same food"],"Includes common ancestry and fertile offspring."],
+["Which is a source of variation?","Mutation",["Mitosis","Cloning","Pollination"],"Mutation and recombination add variation."],
+["Which is an example of reproductive isolation?","Species breeding at different times",["Same courtship dance","Same pollinator","Same habitat"],"Different timing prevents mating."],
+["Founder effect happens when…","A small group starts a new population",["A large population mixes","Mutation rates drop","Predators disappear"],"The gene pool is not representative."],
+["Convergent evolution gives…","Similar features in unrelated organisms",["Different features in related organisms","No change","New alleles"],"Similar environment, similar selection."],
+["Which statement about Lamarck is correct?","He thought acquired characteristics could be inherited",["He proposed natural selection","He discovered DNA","He worked with pea plants"],"This idea is not supported by evidence."]
+],
+concepts:[
+{t:"Natural selection",say:"Explain how natural selection works, using an example.",pts:[
+["Variation exists in a population",["variation","vary","different"]],
+["More offspring than can survive; competition",["competition","struggle","overproduc","more offspring"]],
+["The best adapted survive and reproduce",["survive","adapted","fittest","reproduce"]],
+["They pass on their alleles, so the population changes",["allele","pass on","inherit","generation"]],
+["Example such as peppered moth; artificial selection mimics it",["peppered","moth","artificial","dog","maize"]]]},
+{t:"Speciation",say:"Explain how a new species forms and what keeps species apart.",pts:[
+["Species = interbreed and produce viable offspring",["interbreed","viable","fertile"]],
+["Variation from mutation and recombination",["mutation","recombination","crossing"]],
+["Allopatric: geographic isolation; sympatric: same area",["allopatric","sympatric","isolation","barrier"]],
+["Reproductive isolation: timing, courtship, pollinators",["timing","season","courtship","pollinator"]],
+["Examples: Galapagos finches or Lake Malawi cichlids; founder effect",["finch","cichlid","malawi","galapagos","founder"]]]}
+]},
+
+{id:"hominids",name:"Human Evolution",short:"Hominids",c:"--t10",
+reels:[
+["What is a hominid?","A bipedal animal in the fossil record with a mix of **ape-like and human-like features**. Hominid science uses **fossils**, **genetics** (especially **mitochondrial DNA**) and **archaeology**. Classification is still debated.","Hominid = walks upright."],
+["From ape to human: the trends","Over time: **bigger brain** (cranial capacity), **smaller brow ridge**, **foramen magnum** moves under the skull, **smaller jaws and teeth**, flatter face, **bowl-shaped pelvis**, S-shaped spine, longer legs and shorter arms, arched feet.","Upright body, bigger brain, smaller jaw."],
+["Lucy: Australopithecus afarensis","Found in the **Awash Valley, Ethiopia**. Walked upright but had a small brain and ape-like face. A very famous skeleton.","Lucy = Ethiopia."],
+["Taung child and Mrs Ples","**A. africanus**. The **Taung child** was found by **Raymond Dart**. **Mrs Ples** was found at **Sterkfontein** in the **Cradle of Humankind**, South Africa.","Africanus = South Africa."],
+["Newest South African finds","**Australopithecus sediba** may sit between Australopithecus and Homo. **Homo naledi** (Rising Star cave) is a possible candidate for the earliest Homo. New evidence keeps revising the story.","New fossils = new chapters."],
+["Homo habilis: the handy man","The **first tool maker**. Found at **Lake Turkana (Kenya)** and **Olduvai Gorge (Tanzania)**. Bigger brain than the australopithecines.","Habilis = handy."],
+["Homo erectus","Fully upright, larger brain, used fire and tools. Spread out of Africa. A disputed ancestor of modern humans and of **Homo neanderthalensis** (found in Europe).","Erectus walked out of Africa."],
+["Homo sapiens in South Africa","Fossils at **Border Cave (KwaZulu-Natal)** and **Klasies River Mouth**. **Blombos** and **Pinnacle Point** caves show early use of fire to make **ochre artefacts**. The **San** are among the world's oldest living peoples.","Southern Africa has deep human history."],
+["Everything is linked","**Bipedalism** freed the hands, which made **tool-making** easier, then **fire**, cooking, a bigger brain, **language** and **culture**. Each step supported the next.","They are interdependent."],
+["Out of Africa vs Multiregional","**Out of Africa**: modern humans arose in Africa and spread, replacing other hominids. **Multiregional**: Homo erectus evolved into Homo sapiens in several regions independently. Genetic evidence supports African origins.","Where did sapiens start?"],
+["We are cousins","All modern humans are genetically very closely related, and very similar to other primates (around 98% DNA similarity with chimpanzees).","Tiny differences, big stories.","brain"]
+],
+checks:[
+["Which hominid is known as the first tool maker?","Homo habilis",["Australopithecus afarensis","Homo naledi","Australopithecus africanus"],"Habilis means handy man."],
+["Where was Mrs Ples found?","Sterkfontein",["Awash Valley","Lake Turkana","Olduvai Gorge"],"Sterkfontein is in the Cradle of Humankind."],
+["Which trend is correct over time?","Cranial capacity increased",["Brow ridges grew bigger","Jaws grew larger","Arms grew longer"],"Brain size increased."]
+],
+quiz:[
+["Who found the Taung child?","Raymond Dart",["Ron Clarke","Mary Leakey","Charles Darwin"],"He described it in 1925."],
+["Lucy belongs to which species?","Australopithecus afarensis",["Homo erectus","Homo sapiens","Homo habilis"],"Found in the Awash Valley, Ethiopia."],
+["Which is the correct order (oldest to youngest)?","Afarensis → africanus → habilis → erectus → sapiens",["Habilis → afarensis → sapiens → erectus","Sapiens → erectus → habilis","Erectus → africanus → afarensis"],"A broad sequence."],
+["Which South African site is linked to early use of fire and ochre?","Blombos Cave",["Awash Valley","Taung","Olduvai Gorge"],"Also Pinnacle Point."],
+["Which hypothesis says modern humans arose only in Africa?","Out of Africa",["Multiregional","Gradualism","Lamarckism"],"Then spread across the world."],
+["What does the foramen magnum position show?","Upright posture",["Brain size","Diet","Tool use"],"A forward, lower position means bipedalism."],
+["Which DNA is passed from mother only?","Mitochondrial DNA",["Y chromosome DNA","Nuclear DNA","Plasmid DNA"],"Useful for tracing female lines."]
+],
+concepts:[
+{t:"The hominid line-up",say:"Name the main hominids in order, where they were found and their key features.",pts:[
+["Australopithecus afarensis: Lucy, Awash Valley, Ethiopia",["afarensis","lucy","ethiopia","awash"]],
+["Australopithecus africanus: Taung child (Dart) and Mrs Ples (Sterkfontein)",["africanus","taung","dart","ples","sterkfontein"]],
+["Homo habilis: first tool maker (Lake Turkana, Olduvai Gorge)",["habilis","tool","turkana","olduvai"]],
+["Homo erectus: upright, fire, spread out of Africa",["erectus","fire"]],
+["Homo sapiens: Border Cave, Klasies River, Blombos; San",["sapiens","border cave","klasies","blombos","san"]],
+["Newer finds: A. sediba and Homo naledi",["sediba","naledi"]]]},
+{t:"Trends, links and origins",say:"Explain how hominid features changed and where modern humans came from.",pts:[
+["Trends: bigger brain, smaller jaws and brow ridge, foramen magnum forward, bipedal",["brain","cranial","jaw","brow","foramen","bipedal"]],
+["Bipedalism, tools, fire, language and culture are interdependent",["interdependent","bipedal","tool","fire","language","culture"]],
+["Out of Africa hypothesis",["out of africa"]],
+["Multiregional model",["multiregional"]],
+["Humans are genetically very close to each other and to primates",["close","similar","primate","chimp"]]]}
+]}
+);
+
+/* ===== SONGS: original lyrics. Each line is spoken one bar at a time ===== */
+const SONGS = [
+{id:"dna",title:"Base Pair Bop",topic:"dna",bpm:88,root:57,scale:[0,2,4,7,9],seed:3,
+lines:["A and T hold hands real tight,","C and G, a perfect fit.","Phosphate, sugar, base in line,","That is a nucleotide, we are fine.","In RNA there is no T,","Uracil swaps in, you see.","Two strands twisting, double helix,","That is the code of life, no tricks!"]},
+{id:"protein",title:"Copy, Carry, Build",topic:"dna",bpm:90,root:55,scale:[0,3,5,7,10],seed:7,
+lines:["Polymerase unzips the DNA,","Builds the mRNA, copies the way.","Transcription is in the nucleus,","The message leaves for the ribosome.","Three bases make a codon,","tRNA anticodon matches on.","Amino acids link up in a chain,","That is translation, a protein is made!"]},
+{id:"meiosis",title:"Meiosis Shuffle",topic:"meiosis",bpm:92,root:60,scale:[0,2,4,7,9],seed:11,
+lines:["Diploid cell, forty six,","Copy the DNA, then we mix.","Prophase one, we cross over and swap,","Pairs split apart in anaphase one.","Meiosis two, chromatids part,","Four haploid cells, a brand new start.","Twenty three in each one, yeah,","Fertilise and forty six is here."]},
+{id:"cycle",title:"Hormone Cycle Groove",topic:"humanrep",bpm:86,root:53,scale:[0,2,3,7,9],seed:5,
+lines:["FSH wakes up the follicle,","Oestrogen builds the lining, oh!","LH surges, ovulation midcycle,","Corpus luteum, progesterone queen.","No baby? Progesterone drops,","The lining sheds and the cycle restarts.","Negative feedback keeps it in line,","Hormones working right on time."]},
+{id:"feedback",title:"Feedback Loop",topic:"endocrine",bpm:90,root:58,scale:[0,2,4,7,9],seed:13,
+lines:["Glucose goes up, insulin comes,","Liver stores it, glycogen, done.","Glucose goes down, glucagon calls,","Liver releases and up it crawls.","Negative feedback, back to the norm,","Homeostasis keeps us in form.","Adrenalin pumps when danger is near,","Heart rate up, fight or flee, I am outta here!"]},
+{id:"pop",title:"Population Pulse",topic:"ecology",bpm:94,root:62,scale:[0,2,4,7,9],seed:17,
+lines:["Births plus immigration add,","Deaths plus emigration subtract.","Limiting factors keep it in check,","Carrying capacity, the ceiling is set.","Predator, prey, they rise and fall,","Fire and floods do not care how dense.","Mark, recapture, M times C,","Divide by R, that is the population!"]},
+{id:"select",title:"Fittest Fits",topic:"evolution",bpm:90,root:59,scale:[0,3,5,7,10],seed:19,
+lines:["Variation in the population,","Mutations bring the new creation.","Too many babies, not enough food,","Struggle to survive, that is the mood.","The best adapted live to breed,","Pass their alleles, that is the lead.","Over generations things change,","Natural selection, Darwin and Wallace game."]},
+{id:"lucy",title:"Lucy Walks Tall",topic:"hominids",bpm:88,root:57,scale:[0,2,4,7,9],seed:23,
+lines:["Lucy walked tall in Ethiopia,","Australopithecus afarensis, ah!","Taung child, Mrs Ples, africanus,","Sterkfontein, the Cradle of Humankind!","Homo habilis made the tools,","Homo erectus used the fire,","Homo sapiens, big brain, we speak,","Out of Africa, that is the theory."]}
+];
+
+/* ===== FACT OR CAP: [statement, isTrue, why] ===== */
+const FACTS = [
+["Thymine is found in RNA.",false,"RNA has uracil instead of thymine."],
+["tRNA carries amino acids to the ribosome.",true,"Its anticodon matches the mRNA codon."],
+["Transcription takes place at the ribosome.",false,"It happens in the nucleus; translation is at the ribosome."],
+["A deletion causes a frameshift mutation.",true,"All codons after the deletion change."],
+["Mitochondrial DNA is inherited from the mother only.",true,"That is why it traces maternal lines."],
+["Meiosis produces four genetically identical cells.",false,"The four haploid cells are genetically different."],
+["Crossing over happens in prophase I.",true,"Homologous chromosomes swap segments."],
+["Human gametes have 46 chromosomes.",false,"They are haploid: 23."],
+["Down syndrome is caused by non-disjunction.",true,"Usually an extra copy of chromosome 21."],
+["Mitosis involves two nuclear divisions.",false,"Meiosis has two; mitosis has one."],
+["Tt is a homozygous genotype.",false,"Tt is heterozygous."],
+["Colour blindness is carried on the X chromosome.",true,"Red-green colour blindness is X-linked recessive."],
+["A father passes his X chromosome to his sons.",false,"Sons get the Y from the father."],
+["The F1 generation is the parent generation.",false,"P is the parent generation."],
+["Mendel used large samples to get reliable ratios.",true,"Larger samples are closer to expected ratios."],
+["Ligase cuts DNA at specific sequences.",false,"Restriction enzymes cut; ligase joins."],
+["Bacterial plasmids can carry genes into bacteria.",true,"They act as vectors."],
+["In SCNT the nucleus comes from a somatic cell.",true,"It is placed into an egg with its nucleus removed."],
+["CRISPR is a genome-editing tool.",true,"It can target and change DNA at exact sites."],
+["Insulin is released when blood glucose is low.",false,"Glucagon is released when glucose is low."],
+["ADH makes the kidneys reabsorb more water.",true,"Urine becomes more concentrated."],
+["Negative feedback reverses a change.",true,"It restores the set point."],
+["The pancreas makes thyroxin.",false,"The thyroid makes thyroxin."],
+["The LH surge triggers ovulation.",true,"Mid-cycle."],
+["Fertilisation normally occurs in the uterus.",false,"It occurs in the oviduct."],
+["The corpus luteum secretes progesterone.",true,"It maintains the endometrium."],
+["Sperm and semen mean the same thing.",false,"Sperm are cells; semen is sperm plus fluids."],
+["The ovary becomes the fruit after fertilisation.",true,"The ovule becomes the seed."],
+["Elephants are r-strategists.",false,"They are K-strategists."],
+["Ovoviviparous animals keep eggs inside the mother and nourish them with yolk.",true,"Hatching happens inside or at birth."],
+["A flood is a density-dependent limiting factor.",false,"Floods are density-independent."],
+["N = (M × C) ÷ R is used in mark-recapture.",true,"M marked, C caught, R recaptured marked."],
+["Pioneer species arrive first in primary succession.",true,"Lichens and mosses, for example."],
+["Lions and zebras are a predator-prey example.",true,"They regulate each other's numbers."],
+["Lamarck proposed natural selection with Darwin.",false,"That was Alfred Wallace; Lamarck thought acquired traits are inherited."],
+["Natural selection acts on inherited variation.",true,"Only heritable differences can be passed on."],
+["Allopatric speciation needs geographic isolation.",true,"A barrier stops gene flow."],
+["Convergent evolution makes unrelated species look similar.",true,"E.g. shark and dolphin body shapes."],
+["Homo habilis was the first tool maker.",true,"Habilis means handy man."],
+["Lucy was found in South Africa.",false,"She was found in the Awash Valley, Ethiopia."],
+["The Taung child was found by Raymond Dart.",true,"It is an Australopithecus africanus."],
+["The foramen magnum moves forward as posture becomes upright.",true,"The spine joins the skull from beneath."],
+["Out of Africa says modern humans first evolved in Africa.",true,"They then spread worldwide."]
+];
+
+/* ===== ORDER IT sets ===== */
+const ORDERS = [
+{t:"Protein synthesis",steps:["DNA unzips in the nucleus","RNA polymerase builds mRNA","mRNA leaves through a nuclear pore","mRNA attaches to a ribosome","tRNA brings amino acids to codons","Amino acids join into a protein"]},
+{t:"Meiosis",steps:["DNA replicates in interphase","Prophase I: crossing over","Metaphase I: pairs line up","Anaphase I: pairs separate","Meiosis II: chromatids separate","Four haploid cells form"]},
+{t:"Menstrual cycle",steps:["FSH grows a follicle","Oestrogen thickens the endometrium","LH surge","Ovulation","Corpus luteum makes progesterone","Progesterone falls, menstruation"]},
+{t:"Make human insulin in bacteria",steps:["Cut out the insulin gene with restriction enzyme","Cut the plasmid with the same enzyme","Join gene into plasmid with ligase","Put plasmid into bacteria","Bacteria multiply","Collect the insulin"]},
+{t:"Blood glucose too high",steps:["Blood glucose rises","Pancreas detects the rise","Insulin is released","Liver makes glycogen, cells take up glucose","Blood glucose falls","Insulin release slows down"]},
+{t:"Natural selection",steps:["Variation exists in the population","More offspring than can survive","Struggle for resources","Best adapted survive","Survivors reproduce","Alleles become more common"]},
+{t:"Primary succession",steps:["Bare rock","Lichens (pioneers)","Mosses","Grasses","Shrubs","Trees (stable community)"]},
+{t:"Hominid sequence",steps:["Australopithecus afarensis","Australopithecus africanus","Homo habilis","Homo erectus","Homo sapiens"]}
+];
+
+/* ===== MEMORY MATCH pairs [term, meaning] ===== */
+const PAIRS = [
+["Anticodon","3 bases on tRNA"],["Codon","3 bases on mRNA"],["RNA polymerase","Builds mRNA"],["Uracil","Replaces thymine in RNA"],
+["Crossing over","Swaps DNA between homologues"],["Haploid","One set of chromosomes"],["Non-disjunction","Chromosomes fail to separate"],["Karyotype","Picture of chromosomes"],
+["Allele","Version of a gene"],["Heterozygous","Two different alleles"],["Phenotype","What it looks like"],["Gonosomes","Sex chromosomes"],
+["Ligase","Joins DNA pieces"],["Plasmid","Bacterial vector"],["Transgenic","Gene from another species"],["SCNT","Cloning method"],
+["Insulin","Lowers blood glucose"],["Glucagon","Raises blood glucose"],["ADH","Water reabsorption"],["Thyroxin","Metabolic rate"],
+["LH","Triggers ovulation"],["Corpus luteum","Makes progesterone"],["Acrosome","Enzymes on sperm head"],["Placenta","Exchange mother and foetus"],
+["Anther","Makes pollen"],["Stigma","Receives pollen"],["r-strategist","Many offspring, little care"],["Oviparous","Lays eggs"],
+["Carrying capacity","Maximum sustainable population"],["Niche","Role and resources of a species"],["Pioneer species","First in succession"],["Quadrat","Sampling square"],
+["Allopatric","Speciation with isolation"],["Founder effect","Small group starts a population"],["Convergence","Unrelated species look alike"],["Natural selection","Best adapted survive"],
+["Homo habilis","Handy man"],["Lucy","A. afarensis, Ethiopia"],["Mrs Ples","Sterkfontein"],["Out of Africa","Sapiens began in Africa"]
+];
+/* ===== CORE ===== */
+const $=(s,r=document)=>r.querySelector(s);
+const h=(tag,a={},...kids)=>{const e=document.createElement(tag);for(const k in a){const v=a[k];if(k==="class")e.className=v;else if(k==="style")e.style.cssText=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else if(v===true)e.setAttribute(k,"");else if(v!==false&&v!=null)e.setAttribute(k,v)}for(const c of kids.flat(3)){if(c==null||c===false)continue;e.append(c&&c.nodeType?c:document.createTextNode(c))}return e};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/X\^([Hh])/g,"X<sup>$1</sup>");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const TOP=Object.fromEntries(TOPICS.map(t=>[t.id,t]));
+const tcol=t=>`var(${TOP[t].c})`;
+const IC={
+ learn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor"/></svg>',
+ songs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
+ games:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M8 10v5M5.5 12.5h5"/><circle cx="16" cy="11.5" r=".8" fill="currentColor"/><circle cx="18.3" cy="13.8" r=".8" fill="currentColor"/></svg>',
+ quiz:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.2a2.6 2.6 0 115 .8c0 1.7-2.5 2.2-2.5 3.8M12 17.2v.1"/></svg>',
+ teach:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5v4M8.5 21.5h7"/></svg>',
+ me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-6.5 8-6.5s7 2 8 6.5"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>',
+ mark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>',
+ flame:'<svg viewBox="0 0 24 24" fill="#FF8A1F"><path d="M12 2c1 4 5 6 5 11a5 5 0 01-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z"/></svg>',
+ star:'<svg viewBox="0 0 24 24" fill="#FFC93C" stroke="#B8860B" stroke-width="1.2" stroke-linejoin="round"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>',
+ play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>',
+ pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4.5" height="16" rx="1"/><rect x="13.5" y="4" width="4.5" height="16" rx="1"/></svg>',
+ chev:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'
+};
+const ico=(n)=>{const s=document.createElement("span");s.style.display="contents";s.innerHTML=IC[n];return s.firstChild};
+
+/* state */
+const KEY="sphova-bio-lab-v1";
+let S={xp:0,streak:0,last:"",seen:{},got:{},saved:{},checks:{},quiz:{},conf:{},teach:{},best:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const dayStr=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+function touchDay(){const now=new Date(),t=dayStr(now);if(S.last===t)return;const y=new Date(now);y.setDate(y.getDate()-1);S.streak=(S.last===dayStr(y))?S.streak+1:1;S.last=t}
+function addXP(n,why){if(!n)return;touchDay();const before=Math.floor(S.xp/100);S.xp+=n;save();updTop();if(why)toast("+"+n+" XP  "+why);if(Math.floor(S.xp/100)>before){toast("Level up! Level "+(Math.floor(S.xp/100)+1));burst()}}
+const level=()=>Math.floor(S.xp/100)+1;
+function updTop(){const c=$("#xpchip");if(c){c.querySelector("b").textContent=S.xp;c.querySelector("small").textContent="Lv "+level()}const f=$("#streakchip");if(f)f.querySelector("b").textContent=S.streak||0}
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1700)}
+function burst(x,y){const app=$("#app"),r=app.getBoundingClientRect();x=x??r.width/2;y=y??r.height/2;const cols=["#FF2E93","#FFC93C","#FF8FC4","#C026D3","#fff"];for(let i=0;i<22;i++){const s=h("i",{class:"spark",style:`left:${x}px;top:${y}px;background:${pick(cols)}`});app.append(s);const a=Math.random()*6.28,d=60+Math.random()*90;s.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+40}px) scale(.3)`,opacity:0}],{duration:800+Math.random()*400,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>s.remove()}}
+function mastery(tid){const t=TOP[tid];const seen=t.reels.filter((_,i)=>S.seen[tid+"-"+i]).length/t.reels.length;const ck=S.checks[tid];const cr=ck&&ck.total?ck.right/ck.total:0;const qz=(S.quiz[tid]||0)/100;const cf=S.conf[tid]!=null?S.conf[tid]/2:0;const tc=t.concepts.filter((_,i)=>S.teach[tid+"-"+i]&&S.teach[tid+"-"+i].score!=null);const th=tc.length?tc.reduce((a,c)=>a+S.teach[tid+"-"+t.concepts.indexOf(c)].score,0)/t.concepts.length:0;return{seen,cr,qz,cf,th,all:Math.round(100*(seen*.2+cr*.2+qz*.3+cf*.1+th*.2))}}
+
+/* ===== VIZ ===== */
+const VIZ={
+flow:()=>`<svg class="viz" viewBox="0 0 320 90" role="img" aria-label="DNA to mRNA to protein"><g font-family="var(--body)" font-weight="700" font-size="14" text-anchor="middle"><rect x="4" y="22" width="76" height="40" rx="12" fill="var(--pinkSoft)" stroke="var(--pink)" stroke-width="2"/><text x="42" y="47" fill="currentColor">DNA</text><rect x="122" y="22" width="76" height="40" rx="12" fill="var(--pinkSoft)" stroke="var(--pink)" stroke-width="2"/><text x="160" y="47" fill="currentColor">mRNA</text><rect x="240" y="22" width="76" height="40" rx="12" fill="var(--pinkSoft)" stroke="var(--pink)" stroke-width="2"/><text x="278" y="47" fill="currentColor">Protein</text><path d="M84 42h34m-8-6l8 6-8 6M202 42h34m-8-6l8 6-8 6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="101" y="16" font-size="11" fill="currentColor">transcription</text><text x="219" y="16" font-size="11" fill="currentColor">translation</text><text x="101" y="82" font-size="10" fill="currentColor" opacity=".7">nucleus</text><text x="219" y="82" font-size="10" fill="currentColor" opacity=".7">ribosome</text></g></svg>`,
+pairs:()=>{const t="ACGT",b="TGCA";let s='<svg class="viz" viewBox="0 0 320 110" role="img" aria-label="Base pairs A-T and C-G"><g font-family="var(--mono)" font-size="20" font-weight="500" text-anchor="middle">';for(let i=0;i<4;i++){const x=40+i*80;const col=c=>({A:"#FFC2DE",T:"#FFE08A",C:"#D9C2FF",G:"#BDEFD5"})[c];s+=`<rect x="${x-20}" y="8" width="40" height="34" rx="9" fill="${col(t[i])}" stroke="#3A0B26" stroke-width="2"/><text x="${x}" y="32" fill="#3A0B26">${t[i]}</text><path d="M${x} 44v22" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3"/><rect x="${x-20}" y="68" width="40" height="34" rx="9" fill="${col(b[i])}" stroke="#3A0B26" stroke-width="2"/><text x="${x}" y="92" fill="#3A0B26">${b[i]}</text>`}return s+"</g></svg>"},
+punnett:()=>`<svg class="viz" viewBox="0 0 320 130" role="img" aria-label="Punnett square Tt x Tt"><g font-family="var(--mono)" font-size="18" font-weight="500" text-anchor="middle" fill="currentColor"><text x="140" y="20">T</text><text x="210" y="20">t</text><text x="95" y="62">T</text><text x="95" y="112">t</text>${[["TT",140,40],["Tt",210,40],["Tt",140,90],["tt",210,90]].map(([g,x,y])=>`<rect x="${x-32}" y="${y-18}" width="64" height="44" rx="10" fill="var(--pinkSoft)" stroke="var(--pink)" stroke-width="2"/><text x="${x}" y="${y+10}">${g}</text>`).join("")}</g></svg>`,
+loop:()=>`<div style="display:grid;gap:6px;font-size:13px;font-weight:700"><div class="row" style="gap:4px;flex-wrap:nowrap">${["High glucose","insulin","glycogen stored","glucose falls"].map((x,i)=>`<span style="flex:1;text-align:center;padding:6px 3px;border-radius:10px;background:var(--pinkSoft);border:2px solid var(--pink);line-height:1.1">${x}</span>`).join("→")}</div><div class="row" style="gap:4px;flex-wrap:nowrap">${["Low glucose","glucagon","glucose released","glucose rises"].map(x=>`<span style="flex:1;text-align:center;padding:6px 3px;border-radius:10px;background:var(--card);border:2px solid var(--line);line-height:1.1">${x}</span>`).join("→")}</div></div>`,
+cycle:()=>{const X=d=>24+d*10.1,Y=v=>118-v*100;const g=(d,c,w,a)=>a*Math.exp(-((d-c)**2)/(2*w*w));const lines=[["Oestrogen","var(--pink)",d=>.08+g(d,13,2.6,.85)+g(d,21,3.4,.45)],["Progesterone","var(--good)",d=>.04+g(d,21.5,3.6,.85)],["LH","var(--gold)",d=>.08+g(d,14,.9,.9)],["FSH","var(--ink2)",d=>.1+g(d,4,3.2,.35)+g(d,14,1.2,.3)]];let s='<svg class="viz" viewBox="0 0 320 150" role="img" aria-label="Schematic hormone levels across a 28 day cycle"><g font-family="var(--body)" font-size="10" fill="currentColor">';s+='<path d="M24 118h284M24 14v104" stroke="currentColor" stroke-width="1.5" opacity=".6"/>';[0,7,14,21,28].forEach(d=>s+=`<text x="${X(d)}" y="132" text-anchor="middle">${d}</text>`);s+=`<text x="24" y="146" opacity=".7">day (schematic)</text><path d="M${X(14)} 14v104" stroke="currentColor" stroke-dasharray="3 3" opacity=".6"/><text x="${X(14)}" y="146" text-anchor="middle" font-weight="700">ovulation</text>`;lines.forEach(([n,c,f])=>{let p="";for(let d=0;d<=28;d+=.5)p+=(p?"L":"M")+X(d).toFixed(1)+" "+Y(f(d)).toFixed(1);s+=`<path d="${p}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`});[24,92,180,222].forEach((x,i)=>{const [n,c]=lines[i];s+=`<rect x="${x}" y="2" width="10" height="4" fill="${c}" rx="2"/><text x="${x+14}" y="8">${n}</text>`});return s+"</g></svg>"},
+scurve:()=>{let p="";for(let t=0;t<=10;t+=.25){const v=1/(1+Math.exp(-(t-4.5)*1.1));p+=(p?"L":"M")+(30+t*28).toFixed(1)+" "+(112-v*88).toFixed(1)}return `<svg class="viz" viewBox="0 0 320 130" role="img" aria-label="S-shaped population growth curve levelling at carrying capacity"><g font-family="var(--body)" font-size="11" fill="currentColor"><path d="M30 112h280M30 12v100" stroke="currentColor" stroke-width="1.5" opacity=".6"/><path d="M30 24h280" stroke="var(--pink)" stroke-dasharray="5 4" stroke-width="2"/><text x="36" y="19" font-weight="700">carrying capacity (K)</text><path d="${p}" fill="none" stroke="var(--pink)" stroke-width="4" stroke-linecap="round"/><text x="170" y="126" text-anchor="middle" opacity=".7">time</text></g></svg>`},
+succ:()=>`<div class="row" style="gap:4px;flex-wrap:wrap;font-size:13px;font-weight:700">${["Bare rock","Lichens","Mosses","Grasses","Shrubs","Trees"].map(x=>`<span style="padding:5px 9px;border-radius:10px;background:var(--pinkSoft);border:2px solid var(--pink)">${x}</span>`).join("→")}</div>`,
+brain:()=>{const d=[["A. afarensis",450],["A. africanus",450],["H. habilis",640],["H. erectus",950],["H. sapiens",1350]];let s='<svg class="viz" viewBox="0 0 320 130" role="img" aria-label="Approximate cranial capacity of hominids"><g font-family="var(--body)" font-size="11" fill="currentColor">';d.forEach(([n,v],i)=>{const y=6+i*24,w=v/1350*180;s+=`<text x="4" y="${y+14}">${n}</text><rect x="92" y="${y}" width="${w}" height="18" rx="6" fill="var(--pink)"/><text x="${96+w}" y="${y+13}" font-weight="700">${v}</text>`});return s+'<text x="92" y="128" opacity=".7">approx. cranial capacity (cm³)</text></g></svg>'}
+};
+
+/* ===== SHELL ===== */
+const TABS=[["learn","Learn"],["songs","Songs"],["games","Games"],["quiz","Quiz"],["teach","Teach"],["me","Me"]];
+let curTab="learn";
+function buildShell(){
+  const app=$("#app");app.innerHTML="";
+  app.append(
+    h("div",{class:"top"},h("div",{class:"logo"},"Sphova's Bio Lab"),
+      h("span",{class:"chip",id:"streakchip",title:"Day streak"},ico("flame"),h("b",{},"0")),
+      h("button",{class:"chip",id:"xpchip",onclick:()=>go("me"),"aria-label":"Open my progress"},ico("star"),h("b",{},"0"),h("small",{style:"font-weight:600;color:var(--ink2)"},"Lv 1"))),
+    h("div",{id:"view"}),
+    h("nav",{class:"tabs",role:"tablist"},TABS.map(([id,l])=>h("button",{class:"tab",role:"tab",id:"tab-"+id,"aria-selected":"false",onclick:()=>go(id)},ico(id),l))),
+    h("div",{class:"toast",id:"toast",role:"status","aria-live":"polite"})
+  );
+  updTop();
+}
+function go(tab,opts){stopSong();clearGame();curTab=tab;TABS.forEach(([id])=>$("#tab-"+id).setAttribute("aria-selected",id===tab));const v=$("#view");v.innerHTML="";({learn:renderLearn,songs:renderSongs,games:renderGames,quiz:renderQuiz,teach:renderTeach,me:renderMe})[tab](v,opts||{})}
+
+/* ===== LEARN FEED ===== */
+let feedTopic="mix";
+function buildFeed(tp){
+  const items=[];
+  if(tp==="mix"){
+    let pool=[];TOPICS.forEach(t=>shuffle(t.reels.map((r,i)=>({k:"reel",t:t.id,r,id:t.id+"-"+i}))).slice(0,2).forEach(x=>pool.push(x)));pool=shuffle(pool);
+    const cks=shuffle(TOPICS.map(t=>({k:"check",t:t.id,q:pick(t.checks),id:t.id+"-mix"+Math.random()})));
+    pool.forEach((x,i)=>{items.push(x);if(i%4===3&&cks.length)items.push(cks.pop())});
+    items.push({k:"end",t:"mix"});
+  }else{
+    const t=TOP[tp];const n=t.reels.length;const gap=Math.max(2,Math.floor(n/(t.checks.length)));
+    let ci=0;t.reels.forEach((r,i)=>{items.push({k:"reel",t:tp,r,id:tp+"-"+i});if((i+1)%gap===0&&ci<t.checks.length&&i<n-1){items.push({k:"check",t:tp,q:t.checks[ci],id:tp+"-ck"+ci});ci++}});
+    while(ci<t.checks.length){items.push({k:"check",t:tp,q:t.checks[ci],id:tp+"-ck"+ci});ci++}
+    items.push({k:"conf",t:tp});items.push({k:"end",t:tp});
+  }
+  return items;
+}
+function renderLearn(v){
+  const wrap=h("div",{class:"feedwrap"});
+  const bar=h("div",{class:"topicbar",role:"group","aria-label":"Choose a topic"});
+  const mk=(id,label,c)=>h("button",{class:"tchip","aria-pressed":String(feedTopic===id),style:c?`--tc:${c}`:"",onclick:()=>{feedTopic=id;renderLearnInto(v)}},label);
+  bar.append(mk("mix","For you"),...TOPICS.map(t=>mk(t.id,t.short,tcol(t.id))));
+  const prog=h("div",{class:"prog"});
+  const feed=h("div",{class:"feed",tabindex:"0",role:"feed","aria-label":"Study cards"});
+  wrap.append(bar,prog,feed);v.append(wrap);
+  const items=buildFeed(feedTopic);
+  items.forEach(()=>prog.append(h("i")));
+  const setH=()=>feed.style.setProperty("--slideh",feed.clientHeight+"px");
+  new ResizeObserver(setH).observe(feed);setH();
+  items.forEach((it,idx)=>feed.append(slide(it,idx,items.length,feed)));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=+e.target.dataset.i;[...prog.children].forEach((c,j)=>c.classList.toggle("on",j<=i));const it=items[i];if(it.k==="reel"&&!S.seen[it.id]){S.seen[it.id]=1;addXP(1);}}}),{root:feed,threshold:.6});
+  [...feed.children].forEach(c=>io.observe(c));
+  const active=bar.querySelector('[aria-pressed="true"]');active&&active.scrollIntoView({inline:"center",block:"nearest"});
+}
+function renderLearnInto(v){v.innerHTML="";renderLearn(v)}
+function slide(it,idx,total,feed){
+  const tid=it.t==="mix"?"dna":it.t;const col=tcol(tid);
+  const s=h("section",{class:"slide","data-i":idx});
+  const inner=h("div",{class:"slidein",style:`--tc:${col}`});inner.append(h("div",{class:"blob"}));
+  s.append(inner);
+  const next=()=>feed.scrollBy({top:feed.clientHeight,behavior:"smooth"});
+  const nextBtn=idx<total-1?h("button",{class:"nextfab",onclick:next},"Next ↓"):null;
+  if(it.k==="reel"){
+    const [hook,text,tip,viz]=it.r;
+    inner.append(h("div",{class:"row"},h("span",{class:"tag"},TOP[it.t].short)));
+    inner.append(h("div",{class:"hook"},hook));
+    const tx=h("div",{class:"txt"});tx.innerHTML=fmt(text);inner.append(tx);
+    if(viz){const vz=h("div");vz.innerHTML=VIZ[viz]();inner.append(vz)}
+    const tp=h("div",{class:"tip"},h("small",{},"Memory hack"),tip);inner.append(tp);
+    const rail=h("div",{class:"rail"});
+    const got=h("button",{class:"rb","aria-pressed":String(!!S.got[it.id]),"aria-label":"I got this",onclick:e=>{const b=e.currentTarget;S.got[it.id]=!S.got[it.id];b.setAttribute("aria-pressed",String(!!S.got[it.id]));if(S.got[it.id]){addXP(2,"Got it");const r=b.getBoundingClientRect(),a=$("#app").getBoundingClientRect();burst(r.left-a.left+23,r.top-a.top+23)}save()}},ico("check"));
+    const sv=h("button",{class:"rb","aria-pressed":String(!!S.saved[it.id]),"aria-label":"Save card",onclick:e=>{const b=e.currentTarget;S.saved[it.id]=S.saved[it.id]?0:1;b.setAttribute("aria-pressed",String(!!S.saved[it.id]));save();toast(S.saved[it.id]?"Saved to Me":"Removed")}},ico("mark"));
+    const th=h("button",{class:"rb","aria-label":"Teach this topic",onclick:()=>go("teach",{topic:it.t})},ico("teach"));
+    const sg=SONGS.find(x=>x.topic===it.t);
+    rail.append(got,h("div",{class:"rl"},"Got it"),sv,h("div",{class:"rl"},"Save"),th,h("div",{class:"rl"},"Teach"));
+    if(sg){rail.append(h("button",{class:"rb","aria-label":"Play the song for this topic",onclick:()=>go("songs",{song:sg.id})},ico("songs")),h("div",{class:"rl"},"Sing"))}
+    inner.append(rail);
+    if(idx===0)inner.append(h("div",{class:"swipehint"},"Swipe up ↑"));
+  }
+  if(it.k==="check"){
+    const [q,right,wrongs,why]=it.q;
+    inner.append(h("div",{class:"checkhead"},h("span",{class:"badge"},"Check-in"),h("span",{class:"tag"},TOP[it.t].short)));
+    inner.append(h("div",{class:"hook",style:"font-size:clamp(22px,6vw,30px)"},q));
+    const box=h("div",{style:"overflow-y:auto;min-height:0"});inner.append(box);
+    const fb=h("div");
+    shuffle([right,...wrongs]).forEach(o=>{const b=h("button",{class:"opt",onclick:()=>{box.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.dataset.v===right)x.classList.add("right")});const ok=o===right;if(!ok)b.classList.add("wrong");const c=S.checks[it.t]||(S.checks[it.t]={right:0,total:0});c.total++;if(ok)c.right++;save();if(ok)addXP(5,"Nice");fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"Yes! ":"Not quite. ")+why;if(ok)burst()},"data-v":o},o);box.append(b)});
+    box.append(fb);
+    inner.append(h("div",{class:"note",style:"margin-top:auto"},"Quick check. Say the answer in your head before you tap."));
+  }
+  if(it.k==="conf"){
+    inner.append(h("div",{class:"checkhead"},h("span",{class:"badge"},"Check-in"),h("span",{class:"tag"},TOP[it.t].short)));
+    inner.append(h("div",{class:"hook"},"How well do you know "+TOP[it.t].short+"?"));
+    inner.append(h("div",{class:"note"},"Be honest. Red means we will bring it back."));
+    const box=h("div",{class:"conf"});
+    [["Not yet","var(--bad)"],["Getting there","var(--gold)"],["Got it","var(--good)"]].forEach(([l,c],i)=>box.append(h("button",{"aria-pressed":String(S.conf[it.t]===i),onclick:()=>{S.conf[it.t]=i;save();box.querySelectorAll("button").forEach((b,j)=>b.setAttribute("aria-pressed",String(j===i)));addXP(2,"Honest check-in");tipEl.textContent=i===2?"Great. Prove it in the quiz or teach it to the Curious Learner.":i===1?"Try the Teach lab: say it, teach it, write it, check it.":"Do the Teach lab or play a game on this topic, then swipe back."}},h("i",{style:"background:"+c}),l)));
+    inner.append(box);const tipEl=h("div",{class:"tip",style:"margin-top:auto"},"Pick one to get a suggestion.");inner.append(tipEl);
+  }
+  if(it.k==="end"){
+    const mix=it.t==="mix";
+    inner.append(h("div",{class:"hook"},mix?"That's your mix!":"Topic done. Now use it."));
+    inner.append(h("div",{class:"note"},mix?"Pick a topic above to go deep, or try something else.":"Reading is not enough. Prove it to yourself."));
+    const bx=h("div",{style:"display:grid;gap:10px"});
+    if(!mix){
+      bx.append(h("button",{class:"btn",onclick:()=>go("teach",{topic:it.t})},"Teach it (say, teach, write, check)"),h("button",{class:"btn ghost",onclick:()=>go("quiz",{topic:it.t})},"Take the quiz"));
+      const sg=SONGS.find(x=>x.topic===it.t);if(sg)bx.append(h("button",{class:"btn ghost",onclick:()=>go("songs",{song:sg.id})},"Sing: "+sg.title));
+      const ni=TOPICS.findIndex(t=>t.id===it.t)+1;if(ni<TOPICS.length)bx.append(h("button",{class:"btn ghost",onclick:()=>{feedTopic=TOPICS[ni].id;go("learn")}},"Next topic: "+TOPICS[ni].short));
+    }else{bx.append(h("button",{class:"btn",onclick:()=>go("games")},"Play a game"),h("button",{class:"btn ghost",onclick:()=>go("quiz")},"Boss round quiz"),h("button",{class:"btn ghost",onclick:()=>{go("learn")}},"New mix"))}
+    inner.append(bx);
+  }
+  if(nextBtn)s.append(nextBtn);
+  return s;
+}
+/* ===== SONGS ===== */
+let AC=null,master=null,noiseBuf=null,schedT=null,playing=null,voiceOn=true;
+function ensureAudio(){try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;AC=new C();master=AC.createGain();master.gain.value=.55;master.connect(AC.destination);noiseBuf=AC.createBuffer(1,AC.sampleRate*.3,AC.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}if(AC.state==="suspended")AC.resume();return true}catch(e){return false}}
+const mtof=m=>440*Math.pow(2,(m-69)/12);
+function env(g,t,a,d,peak){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+d)}
+function kick(t){const o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(42,t+.14);env(g,t,.003,.22,.9);o.connect(g).connect(master);o.start(t);o.stop(t+.3)}
+function noise(t,len,hp,peak){const s=AC.createBufferSource();s.buffer=noiseBuf;const f=AC.createBiquadFilter();f.type="highpass";f.frequency.value=hp;const g=AC.createGain();env(g,t,.002,len,peak);s.connect(f).connect(g).connect(master);s.start(t);s.stop(t+len+.05)}
+function tone(t,m,type,dur,peak){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=mtof(m);env(g,t,.01,dur,peak);o.connect(g).connect(master);o.start(t);o.stop(t+dur+.1)}
+function rngf(seed){let a=seed*9301+49297;return()=>{a=(a*1103515245+12345)&0x7fffffff;return a/0x7fffffff}}
+function pickVoice(){try{const vs=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));return vs.find(v=>/female|samantha|karen|moira|tessa|zira|google uk english female|serena/i.test(v.name))||vs[0]||null}catch(e){return null}}
+function stopSong(){if(schedT){clearInterval(schedT);schedT=null}if(playing&&playing.timers)playing.timers.forEach(clearTimeout);try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}if(playing&&playing.ui)playing.ui.state(false);playing=null}
+function startSong(sg,ui){
+  stopSong();const ok=ensureAudio();const spb=60/sg.bpm,step=spb/4,bars=sg.lines.length,total=bars*16;
+  const rnd=rngf(sg.seed);const pat=[];for(let i=0;i<16;i++)pat.push(i%2===0&&rnd()>.35?Math.floor(rnd()*sg.scale.length):-1);
+  const chord=[0,0,-2,-4];let n=0;const st={timers:[],ui};playing=st;ui.state(true);
+  let t0=ok?AC.currentTime+.2:0,nextT=t0;
+  const useVoice=voiceOn&&("speechSynthesis" in window);
+  const trigger=(li,delay)=>{st.timers.push(setTimeout(()=>{if(playing!==st)return;ui.line(li);if(useVoice){try{const u=new SpeechSynthesisUtterance(sg.lines[li]);u.rate=1.08;u.pitch=1.25;u.volume=1;const v=pickVoice();if(v){u.voice=v;u.lang=v.lang}speechSynthesis.speak(u)}catch(e){}}},Math.max(0,delay)))};
+  if(!ok){for(let li=0;li<bars;li++)trigger(li,li*spb*4*1000);st.timers.push(setTimeout(()=>finish(),(bars*spb*4+2)*1000));return}
+  const finish=()=>{if(playing!==st)return;const ph=ui.done;stopSong();ph&&ph()};
+  schedT=setInterval(()=>{
+    while(nextT<AC.currentTime+.15){
+      const s=n%16,bar=Math.floor(n/16);
+      if(n<total){
+        if(s===0)trigger(bar,(nextT-AC.currentTime)*1000);
+        if(s===0||s===6||s===10)kick(nextT);
+        if(s===4||s===12){noise(nextT,.16,1500,.35);tone(nextT,52,"triangle",.1,.2)}
+        if(s%2===0)noise(nextT,.04,7000,.1);
+        if(s===0||s===6||s===8||s===14){tone(nextT,sg.root-24+chord[bar%4],"sawtooth",step*3,.16)}
+        if(pat[s]>=0){tone(nextT,sg.root+sg.scale[pat[s]]+(bar%2?12:0),"triangle",step*2.2,.11)}
+      }
+      nextT+=step;n++;
+      if(n===total+12){st.timers.push(setTimeout(finish,Math.max(0,(nextT-AC.currentTime)*1000+1500)))}
+    }
+  },30);
+}
+function renderSongs(v,opts){
+  const p=h("div",{class:"panel"});v.append(p);
+  p.append(h("h2",{},"Sing it"),h("div",{class:"sub"},"Short songs, one idea per line. Press play, sing along, then cover the lyrics and sing it from memory."));
+  const list=h("div",{class:"songlist"});
+  SONGS.forEach(sg=>list.append(h("button",{class:"song",style:`--tc:${tcol(sg.topic)}`,onclick:()=>openPlayer(v,sg)},h("div",{class:"disc"}),h("div",{style:"flex:1;min-width:0"},h("div",{style:"font-family:var(--display);font-size:19px;line-height:1.1"},sg.title),h("div",{class:"note"},TOP[sg.topic].name)),h("span",{class:"tag",style:`--tc:${tcol(sg.topic)}`},S.best["song-"+sg.id]?"Sung":"New"))));
+  p.append(list);
+  if(opts.song){const sg=SONGS.find(x=>x.id===opts.song);if(sg)openPlayer(v,sg)}
+}
+function openPlayer(v,sg){
+  const old=$(".player");old&&old.remove();
+  const pl=h("div",{class:"player",style:`--tc:${tcol(sg.topic)}`});
+  const lyr=h("div",{class:"lyrics","aria-live":"off"});
+  const lines=sg.lines.map(l=>{const d=h("div",{class:"ly"},h("span",{},l));lyr.append(d);return d});
+  const eq=h("div",{class:"eq","aria-hidden":"true"},[1,2,3,4,5,6,7].map(()=>h("i")));
+  let hide=false;const playBtn=h("button",{class:"btn",style:"min-width:120px"},ico("play"),h("span",{style:"margin-left:6px"},"Play"));
+  const voiceBtn=h("button",{class:"btn ghost sm","aria-pressed":String(voiceOn),onclick:e=>{voiceOn=!voiceOn;e.currentTarget.textContent=voiceOn?"Voice on":"Voice off"}},voiceOn?"Voice on":"Voice off");
+  const hideBtn=h("button",{class:"btn ghost sm",onclick:e=>{hide=!hide;lines.forEach(l=>l.classList.toggle("hide",hide));e.currentTarget.textContent=hide?"Show lyrics":"Cover lyrics"}},"Cover lyrics");
+  const msg=h("div",{class:"note"},"Tip: turn the voice off and sing it yourself.");
+  const after=h("div",{style:"display:grid;gap:8px"});
+  const ui={state:on=>{pl.classList.toggle("on",on);pl.classList.toggle("playing",on);playBtn.replaceChildren(ico(on?"pause":"play"),h("span",{style:"margin-left:6px"},on?"Stop":"Play"));if(!on)lines.forEach(l=>l.classList.remove("now"))},
+    line:i=>{lines.forEach((l,j)=>l.classList.toggle("now",j===i));lines[i].scrollIntoView({block:"center",behavior:"smooth"})},
+    done:()=>{const first=!S.best["song-"+sg.id];S.best["song-"+sg.id]=1;save();if(first)addXP(10,"Song complete");burst();msg.textContent="Nice! Now cover the lyrics and sing it from memory.";songCheck()}};
+  const songCheck=()=>{after.replaceChildren();const t=TOP[sg.topic];const [q,right,wrongs,why]=pick(t.checks);after.append(h("div",{class:"badge",style:"justify-self:start"},"Song check"),h("div",{style:"font-weight:700"},q));const fb=h("div");[right,...wrongs].sort(()=>Math.random()-.5).forEach(o=>after.append(h("button",{class:"opt",style:"margin:0",onclick:e=>{after.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.textContent===right)x.classList.add("right")});const ok=o===right;if(!ok)e.currentTarget.classList.add("wrong");else addXP(5,"Nice");fb.className="fb "+(ok?"ok":"no");fb.textContent=why}},o)));after.append(fb)};
+  playBtn.onclick=()=>{if(playing&&playing.ui===ui)stopSong();else startSong(sg,ui)};
+  pl.append(h("div",{class:"qtop"},h("button",{class:"back",onclick:()=>{stopSong();pl.remove()}},ico("chev"),"All songs"),h("span",{class:"tag",style:"margin-left:auto"},TOP[sg.topic].short)),
+    h("div",{class:"row"},h("div",{class:"disc",style:"width:44px;height:44px"}),h("div",{},h("h3",{},sg.title),h("div",{class:"note"},sg.bpm+" BPM")),h("div",{style:"margin-left:auto"},eq)),
+    lyr,msg,h("div",{class:"row"},playBtn,voiceBtn,hideBtn),after);
+  v.append(pl);
+}
+
+/* ===== QUIZ ===== */
+function renderQuiz(v,opts){
+  if(opts.topic)return runQuiz(v,opts.topic);
+  const p=h("div",{class:"panel"});v.append(p);
+  p.append(h("h2",{},"Quiz time"),h("div",{class:"sub"},"Short rounds. Wrong answers come with the reason."));
+  p.append(h("button",{class:"btn",style:"width:100%;margin-bottom:14px",onclick:()=>runQuiz(v,"boss")},"Boss round: 10 mixed questions"+(S.best.boss?" (best "+S.best.boss+"%)":"")));
+  const g=h("div",{class:"grid"});
+  TOPICS.forEach(t=>g.append(h("button",{class:"gamecard",style:`--tc:${tcol(t.id)};border-color:var(--tc)`,onclick:()=>runQuiz(v,t.id)},h("b",{},t.short),h("span",{},t.quiz.length+" questions"),h("span",{style:"font-weight:700;color:var(--ink)"},S.quiz[t.id]!=null?"Best "+S.quiz[t.id]+"%":"Not tried"))));
+  p.append(g);
+}
+function runQuiz(v,tid){
+  v.innerHTML="";const p=h("div",{class:"panel"});v.append(p);
+  let qs=tid==="boss"?shuffle(TOPICS.flatMap(t=>t.quiz.map(q=>({q,t:t.id})))).slice(0,10):shuffle(TOP[tid].quiz).map(q=>({q,t:tid}));
+  let i=0,score=0;const missed=[];
+  const title=tid==="boss"?"Boss round":TOP[tid].name;
+  const ask=()=>{
+    p.replaceChildren();const {q:[qq,right,wrongs,why],t}=qs[i];
+    p.append(h("div",{class:"qtop"},h("button",{class:"back",onclick:()=>go("quiz")},ico("chev"),"Quiz"),h("span",{class:"tag",style:`--tc:${tcol(t)};margin-left:auto`},TOP[t].short)),
+      h("div",{class:"bar"},h("i",{style:`width:${i/qs.length*100}%`})),h("div",{class:"note",style:"margin:6px 0"},"Question "+(i+1)+" of "+qs.length),
+      h("h3",{style:"margin:8px 0 10px;font-size:22px"},qq));
+    const fb=h("div"),nx=h("button",{class:"btn",style:"margin-top:12px;display:none"},i===qs.length-1?"See results":"Next");
+    nx.onclick=()=>{i++;i<qs.length?ask():done()};
+    shuffle([right,...wrongs]).forEach(o=>p.append(h("button",{class:"opt",onclick:e=>{p.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.textContent===right)x.classList.add("right")});const ok=o===right;if(ok){score++;burst()}else{e.currentTarget.classList.add("wrong");missed.push({q:qq,right,why,t})}fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"Correct. ":"Not quite. ")+why;nx.style.display="inline-block"}},o)));
+    p.append(fb,nx);
+  };
+  const done=()=>{
+    const pct=Math.round(score/qs.length*100);const bonus=pct>=80?10:0;addXP(score*3+bonus);
+    if(tid==="boss")S.best.boss=Math.max(S.best.boss||0,pct);else{S.quiz[tid]=Math.max(S.quiz[tid]||0,pct)}save();
+    p.replaceChildren(h("h2",{style:"text-align:center"},pct>=80?"Slay!":pct>=50?"Getting there":"Good start"),h("div",{class:"scoreRing",style:`--p:${pct}%`},h("b",{},pct+"%")),
+      h("div",{class:"sub",style:"text-align:center"},score+" of "+qs.length+" correct. +"+(score*3+bonus)+" XP"));
+    if(missed.length){p.append(h("h3",{style:"margin:10px 0"},"Fix these"));missed.forEach(m=>p.append(h("div",{class:"card",style:"margin-bottom:8px"},h("div",{style:"font-weight:700"},m.q),h("div",{class:"fb ok",style:"margin-top:6px"},"Answer: "+m.right+". "+m.why))));
+      const ts=[...new Set(missed.map(m=>m.t))];p.append(h("div",{class:"row",style:"margin-top:8px"},ts.map(t=>h("button",{class:"btn ghost sm",onclick:()=>go("teach",{topic:t})},"Teach it: "+TOP[t].short))))}
+    p.append(h("div",{class:"row",style:"margin-top:14px"},h("button",{class:"btn",onclick:()=>runQuiz(v,tid)},"Again"),h("button",{class:"btn ghost",onclick:()=>go("quiz")},"All quizzes")));
+  };
+  ask();
+}
+
+/* ===== ME ===== */
+function renderMe(v){
+  const p=h("div",{class:"panel"});v.append(p);
+  const into=S.xp%100;
+  p.append(h("h2",{},"My progress"),h("div",{class:"sub"},"Level "+level()+" · "+S.xp+" XP · "+(S.streak||0)+" day streak"),h("div",{class:"bar"},h("i",{style:`width:${into}%`})),h("div",{class:"note",style:"margin:4px 0 14px"},(100-into)+" XP to level "+(level()+1)));
+  const ms=TOPICS.map(t=>({t,m:mastery(t.id)}));
+  const weak=[...ms].sort((a,b)=>a.m.all-b.m.all).slice(0,3);
+  p.append(h("h3",{style:"margin:6px 0 8px"},"Do next"));
+  weak.forEach(({t,m})=>p.append(h("div",{class:"card",style:"margin-bottom:8px;display:flex;gap:10px;align-items:center"},h("div",{style:"flex:1;min-width:0"},h("b",{},t.short),h("div",{class:"note"},m.all+"% mastered")),h("button",{class:"btn sm",onclick:()=>{feedTopic=t.id;go("learn")}},"Learn"),h("button",{class:"btn ghost sm",onclick:()=>go("teach",{topic:t.id})},"Teach"))));
+  p.append(h("h3",{style:"margin:16px 0 4px"},"Understanding map"),h("div",{class:"note"},"Built from cards seen, check-ins, quizzes, your own ratings and the Teach lab."));
+  ms.forEach(({t,m})=>p.append(h("div",{class:"mast"},h("div",{class:"lab"},t.short),h("div",{class:"bar"},h("i",{style:`width:${m.all}%;background:${tcol(t.id)}`})),h("b",{class:"mono",style:"width:42px;text-align:right;font-size:13px"},m.all+"%"))));
+  const sv=Object.keys(S.saved).filter(k=>S.saved[k]);
+  p.append(h("h3",{style:"margin:18px 0 8px"},"Saved cards ("+sv.length+")"));
+  if(!sv.length)p.append(h("div",{class:"note"},"Tap the bookmark on any card to keep it here."));
+  sv.forEach(k=>{const [tid,i]=k.split("-");const r=TOP[tid]&&TOP[tid].reels[+i];if(!r)return;p.append(h("button",{class:"chipbtn",style:"width:100%;margin-bottom:6px",onclick:()=>{feedTopic=tid;go("learn")}},h("b",{},r[0]),h("div",{class:"note"},TOP[tid].short)))});
+  let armed=false;const rs=h("button",{class:"btn ghost sm",style:"margin-top:18px",onclick:e=>{if(!armed){armed=true;e.currentTarget.textContent="Tap again to erase everything";return}try{localStorage.removeItem(KEY)}catch(x){}S={xp:0,streak:0,last:"",seen:{},got:{},saved:{},checks:{},quiz:{},conf:{},teach:{},best:{}};updTop();go("me")}},"Reset progress");
+  p.append(rs);
+}
+/* ===== GAMES ===== */
+let gameTimer=null;function clearGame(){if(gameTimer){clearInterval(gameTimer);gameTimer=null}}
+const GAMES=[
+ ["fact","Fact or Cap","Swipe right for fact, left for cap. 10 cards.",gFact,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>'],
+ ["blitz","Base Pair Blitz","60 seconds. Pair, transcribe, find anticodons and translate.",gBlitz,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>'],
+ ["punnett","Punnett Pop","Fill the square, then answer the ratio question.",gPunnett,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 3v18M3 12h18"/></svg>'],
+ ["order","Order It","Tap the steps in the right order.",gOrder,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>'],
+ ["memory","Memory Match","Match each term to its meaning.",gMemory,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="8" height="12" rx="2"/><rect x="13" y="8" width="8" height="12" rx="2"/></svg>'],
+ ["moth","Hungry Bird","Be the predator and watch natural selection happen.",gMoth,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12C8 6 3 7 3 11s5 5 9 1c4 4 9 3 9-1s-5-5-9 1zM12 12v8"/></svg>'],
+ ["pond","Pond Count","Estimate a hidden fish population with mark-recapture.",gPond,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-5 8-5 11 0-3 5-8 5-11 0zM14 12l7-4v8z"/></svg>']
+];
+function renderGames(v,opts){
+  const p=h("div",{class:"panel"});v.append(p);
+  p.append(h("h2",{},"Game zone"),h("div",{class:"sub"},"Each round takes about two minutes. Points go to your XP."));
+  const g=h("div",{class:"grid"});
+  GAMES.forEach(([id,t,d,fn,icon])=>{const b=h("button",{class:"gamecard",onclick:()=>openGame(v,id)},h("b",{},t),h("span",{},d));const s=document.createElement("span");s.innerHTML=icon;b.prepend(s.firstChild);g.append(b)});
+  p.append(g);
+  if(opts.game)openGame(v,opts.game);
+}
+function openGame(v,id){clearGame();const gm=GAMES.find(x=>x[0]===id);v.innerHTML="";const p=h("div",{class:"panel"});v.append(p);p.append(h("button",{class:"back",onclick:()=>go("games")},ico("chev"),"Games"),h("h2",{},gm[1]));const st=h("div",{class:"stage"});p.append(st);gm[3](st)}
+
+function gFact(st){
+  const deck=shuffle(FACTS).slice(0,10);let i=0,score=0;
+  const draw=()=>{
+    st.replaceChildren();
+    if(i>=deck.length){const pct=Math.round(score/10*100);addXP(score*2+(score>=8?5:0));st.append(h("div",{class:"big"},score+" / 10"),h("div",{class:"sub"},pct>=80?"Fact-checker supreme.":"Keep going, you will get there."),h("button",{class:"btn",onclick:()=>gFact(st)},"Play again"));return}
+    const [s,tr,why]=deck[i];
+    const stack=h("div",{class:"swipe"});
+    if(deck[i+1])stack.append(h("div",{class:"sc next"},deck[i+1][0]));
+    const card=h("div",{class:"sc",role:"group","aria-label":"Statement"},h("span",{class:"stamp l"},"CAP"),h("span",{class:"stamp r"},"FACT"),s);
+    stack.append(card);
+    let sx=0,dx=0,drag=false;const L=card.querySelector(".l"),R=card.querySelector(".r");
+    const settle=ans=>{if(card.dataset.done)return;card.dataset.done=1;const ok=ans===tr;if(ok){score++;burst()}card.style.transition="transform .3s,opacity .3s";card.style.transform=`translateX(${ans?400:-400}px) rotate(${ans?25:-25}deg)`;card.style.opacity=0;btns.querySelectorAll("button").forEach(b=>b.disabled=true);fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"Correct. ":"Not quite. ")+(tr?"It is a fact. ":"That is cap. ")+why;nx.style.display="inline-block"};
+    card.addEventListener("pointerdown",e=>{drag=true;sx=e.clientX;card.setPointerCapture(e.pointerId);card.style.transition="none"});
+    card.addEventListener("pointermove",e=>{if(!drag)return;dx=e.clientX-sx;card.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;R.style.opacity=Math.max(0,Math.min(1,dx/90));L.style.opacity=Math.max(0,Math.min(1,-dx/90))});
+    card.addEventListener("pointerup",()=>{if(!drag)return;drag=false;if(Math.abs(dx)>90)settle(dx>0);else{card.style.transition="transform .2s";card.style.transform="";R.style.opacity=0;L.style.opacity=0}dx=0});
+    const btns=h("div",{class:"row",style:"justify-content:center"},h("button",{class:"btn ghost",style:"min-width:120px",onclick:()=>settle(false)},"← Cap"),h("button",{class:"btn",style:"min-width:120px",onclick:()=>settle(true)},"Fact →"));
+    const fb=h("div"),nx=h("button",{class:"btn",style:"display:none;justify-self:start",onclick:()=>{i++;draw()}},"Next");
+    st.append(h("div",{class:"bar"},h("i",{style:`width:${i*10}%`})),h("div",{class:"note"},"Card "+(i+1)+" of 10 · Score "+score),stack,btns,fb,nx);
+  };draw();
+}
+
+function gBlitz(st){
+  let mode="pair",score=0,left=60,run=false;
+  const CODON={AUG:"Methionine",UUU:"Phenylalanine",GGC:"Glycine",GCU:"Alanine",AAA:"Lysine",CCU:"Proline",UAC:"Tyrosine",GAA:"Glutamic acid",UGG:"Tryptophan",CAU:"Histidine",GUU:"Valine",UCU:"Serine"};
+  const modes=[["pair","Pair up (DNA)"],["trans","Transcribe"],["anti","Anticodon"],["tl","Translate"]];
+  const info={pair:"Type the complementary DNA strand.",trans:"Type the mRNA made from this DNA template.",anti:"Type the tRNA anticodon for this mRNA codon.",tl:"Which amino acid does this mRNA codon code for?"};
+  const comp=(s,rna)=>[...s].map(c=>({A:rna?"U":"T",T:"A",U:"A",C:"G",G:"C"})[c]).join("");
+  const rb=(n,a="ATCG")=>Array.from({length:n},()=>a[Math.floor(Math.random()*a.length)]).join("");
+  const menu=()=>{clearGame();st.replaceChildren(h("div",{class:"note"},info.pair+" Pick a mode, then you have 60 seconds."),h("div",{class:"row"},modes.map(([m,l])=>h("button",{class:"chipbtn"+(m===mode?" sel":""),onclick:e=>{mode=m;menu()}},l))),h("div",{class:"note"},info[mode]),h("button",{class:"btn",onclick:start},"Start (best: "+(S.best["blitz-"+mode]||0)+")"))};
+  const start=()=>{score=0;left=60;run=true;clearGame();gameTimer=setInterval(()=>{left--;const t=$("#bt");if(t)t.textContent=left+"s";if(left<=0){clearGame();end()}},1000);next()};
+  const end=()=>{run=false;const b=S.best["blitz-"+mode]||0;if(score>b)S.best["blitz-"+mode]=score;addXP(Math.min(score,25)+(score>b?5:0));st.replaceChildren(h("div",{class:"big"},score+" correct"),h("div",{class:"sub"},score>b?"New best!":"Best is "+b),h("div",{class:"row"},h("button",{class:"btn",onclick:menu},"Again"),h("button",{class:"btn ghost",onclick:()=>go("games")},"Games")))};
+  const bases=s=>h("div",{class:"seq"},[...s].map(c=>h("div",{class:"base "+c},c)));
+  const next=()=>{
+    if(!run)return;let q,ans;
+    if(mode==="pair"){q=rb(4,"ATCG");ans=comp(q,false)}
+    if(mode==="trans"){q=rb(4,"ATCG");ans=comp(q,true)}
+    if(mode==="anti"){q=rb(3,"AUCG");ans=comp(q,true).replace(/T/g,"U")}
+    const head=h("div",{class:"row",style:"justify-content:space-between"},h("div",{class:"mono",style:"font-weight:700"},"Score "+score),h("div",{class:"timer",id:"bt",style:"font-size:28px"},left+"s"));
+    if(mode==="tl"){const cods=Object.keys(CODON);const c=pick(cods);const right=CODON[c];const opts=shuffle([right,...shuffle(Object.values(CODON).filter(x=>x!==right)).slice(0,3)]);
+      st.replaceChildren(head,h("div",{class:"note"},"Codon on mRNA:"),bases(c),h("div",{class:"grid",style:"grid-template-columns:1fr 1fr"},opts.map(o=>h("button",{class:"chipbtn",onclick:e=>{if(!run)return;if(o===right){score++}else{}next()}},o))),h("details",{},h("summary",{class:"note"},"Codon table"),h("div",{class:"note mono",style:"white-space:pre-wrap"},Object.entries(CODON).map(([k,x])=>k+" = "+x).join("\n"))));return}
+    const slots=h("div",{class:"seq"});let got="";const draw=()=>{slots.replaceChildren(...[...Array(ans.length)].map((_,i)=>h("div",{class:"base "+(got[i]||"empty")},got[i]||"?")))};draw();
+    const letters=mode==="pair"?"ATCG":"AUCG";
+    const pad=h("div",{class:"keypad"},[...letters].map(l=>h("button",{class:"btn base "+l,style:"width:64px;height:56px;border:2px solid var(--ink);color:#3A0B26;box-shadow:none;font-family:var(--mono)",onclick:()=>{if(!run)return;got+=l;draw();if(got.length===ans.length){if(got===ans){score++;next()}else{slots.animate([{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],{duration:200});setTimeout(()=>{got="";draw()},200)}}}},l)));
+    st.replaceChildren(head,h("div",{class:"note"},mode==="pair"?"DNA strand:":mode==="trans"?"DNA template:":"mRNA codon:"),bases(q),h("div",{class:"note"},"Your answer:"),slots,pad,h("button",{class:"btn ghost sm",style:"justify-self:start",onclick:()=>{got=got.slice(0,-1);draw()}},"Undo"));
+  };
+  menu();
+}
+
+function gPunnett(st){
+  const SC=[
+   {k:"Tt × Tt",ctx:"T = tall (dominant), t = short.",A:["T","t"],B:["T","t"],q:"What is the probability of a short (tt) offspring?",o:["25%","50%","75%","0%"],a:"25%"},
+   {k:"Tt × tt",ctx:"T = tall (dominant), t = short.",A:["T","t"],B:["t","t"],q:"What is the probability of a tall offspring?",o:["50%","25%","100%","75%"],a:"50%"},
+   {k:"TT × tt",ctx:"T = tall (dominant), t = short.",A:["T","T"],B:["t","t"],q:"What is the phenotype of all offspring?",o:["All tall","All short","Half and half","3 tall : 1 short"],a:"All tall"},
+   {k:"Bb × Bb",ctx:"B = brown eyes (dominant), b = blue eyes.",A:["B","b"],B:["B","b"],q:"What is the genotype ratio BB : Bb : bb?",o:["1 : 2 : 1","3 : 1","1 : 1 : 1","2 : 1 : 1"],a:"1 : 2 : 1"},
+   {k:"XH Xh (mother) × XH Y (father)",ctx:"Haemophilia is X-linked recessive. XH = normal, Xh = haemophilia.",A:["XH","Xh"],B:["XH","Y"],q:"What fraction of the SONS will have haemophilia?",o:["1/2","1/4","All of them","None"],a:"1/2"}
+  ];
+  const gt=s=>s.replace(/X([Hh])/g,"X<sup>$1</sup>");
+  const up=x=>{const c=x.slice(-1);return c===c.toUpperCase()};
+  const canon=(a,b)=>{if(a==="Y"||b==="Y"){return (a==="Y"?b:a)+"Y"}const [x,y]=up(a)||!up(b)?[a,b]:[b,a];return x+y};
+  let idx=-1,score=0,order=shuffle(SC);
+  const nextS=()=>{idx++;if(idx>=order.length){addXP(score*4);st.replaceChildren(h("div",{class:"big"},score+" / "+order.length),h("div",{class:"sub"},"Crosses cracked. +"+score*4+" XP"),h("button",{class:"btn",onclick:()=>gPunnett(st)},"Play again"));return}play(order[idx])};
+  const play=sc=>{
+    const toks=[...new Set([...sc.A,...sc.B])];const opts=[];toks.forEach((a,i)=>toks.forEach((b,j)=>{if(j>=i){const g=canon(a,b);if(g!=="YY"&&!opts.includes(g))opts.push(g)}}));
+    const cur=[[-1,-1],[-1,-1]];const grid=h("div",{class:"punn"});
+    const cells=[];
+    const draw=()=>{grid.replaceChildren(h("div"),...sc.A.map(a=>{const d=h("div",{class:"h"});d.innerHTML=gt(a);return d}));for(let r=0;r<2;r++){const l=h("div",{class:"h"});l.innerHTML=gt(sc.B[r]);grid.append(l);for(let c=0;c<2;c++){const b=h("button",{class:"cell",onclick:()=>{cur[r][c]=(cur[r][c]+1)%opts.length;draw()}});b.innerHTML=cur[r][c]<0?"?":gt(opts[cur[r][c]]);if(chk){const ok=opts[cur[r][c]]===canon(sc.B[r],sc.A[c]);b.classList.add(ok?"ok":"bad")}grid.append(b)}}};
+    let chk=false;const fb=h("div"),qbox=h("div"),cb=h("button",{class:"btn",onclick:()=>{if(cur.flat().some(x=>x<0)){fb.className="fb no";fb.textContent="Fill every square first. Tap a square to cycle through genotypes.";return}chk=true;draw();const all=[0,1].every(r=>[0,1].every(c=>opts[cur[r][c]]===canon(sc.B[r],sc.A[c])));if(all){fb.className="fb ok";fb.textContent="Square complete.";cb.style.display="none";ask()}else{fb.className="fb no";fb.textContent="Red squares are wrong. Combine one allele from the top with one from the side.";setTimeout(()=>{chk=false;},50)}}},"Check square");
+    const ask=()=>{qbox.append(h("div",{style:"font-weight:700;margin-top:6px"},sc.q));shuffle(sc.o).forEach(o=>qbox.append(h("button",{class:"opt",onclick:e=>{qbox.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.textContent===sc.a)x.classList.add("right")});const ok=o===sc.a;if(ok){score++;burst()}else e.currentTarget.classList.add("wrong");fb.className="fb "+(ok?"ok":"no");fb.textContent=ok?"Yes!":"The answer is "+sc.a+".";qbox.append(h("button",{class:"btn",style:"margin-top:8px",onclick:nextS},idx===order.length-1?"Finish":"Next cross"))}},o)))};
+    const head=h("div");head.innerHTML="<b>"+gt(sc.k)+"</b>";
+    st.replaceChildren(h("div",{class:"note"},"Cross "+(idx+1)+" of "+order.length+" · "+sc.ctx),head,grid,h("div",{class:"note"},"Tap each square to set its genotype."),cb,fb,qbox);draw();
+  };
+  nextS();
+}
+
+function gOrder(st){
+  let sets=shuffle(ORDERS),si=0,score=0;
+  const play=()=>{
+    if(si>=sets.length){addXP(score*5);st.replaceChildren(h("div",{class:"big"},score+" / "+sets.length),h("div",{class:"sub"},"+"+score*5+" XP"),h("button",{class:"btn",onclick:()=>gOrder(st)},"Play again"));return}
+    const set=sets[si];const pool=shuffle(set.steps.map((s,i)=>({s,i})));let ans=[];let checked=false;
+    const draw=()=>{
+      const ansBox=h("div",{style:"display:grid;gap:6px"},ans.length?ans.map((x,k)=>h("button",{class:"chipbtn"+(checked?(x.i===k?" ok":" bad"):""),onclick:()=>{if(checked)return;ans.splice(k,1);draw()}},(k+1)+". "+x.s)):h("div",{class:"note"},"Tap steps below in order."));
+      const poolBox=h("div",{style:"display:grid;gap:6px"},pool.filter(x=>!ans.includes(x)).map(x=>h("button",{class:"chipbtn",onclick:()=>{ans.push(x);draw()}},x.s)));
+      const cb=h("button",{class:"btn",disabled:ans.length!==set.steps.length||checked,onclick:()=>{checked=true;const ok=ans.every((x,k)=>x.i===k);if(ok){score++;burst();toast("Perfect order")}draw();const f=$("#ofb");f.className="fb "+(ok?"ok":"no");f.textContent=ok?"Correct!":"Green steps are in the right place. The correct order is shown below.";if(!ok){f.append(h("ol",{style:"margin:6px 0 0;padding-left:18px"},set.steps.map(s=>h("li",{},s))))}$("#onx").style.display="inline-block"}},"Check");
+      st.replaceChildren(h("div",{class:"note"},"Set "+(si+1)+" of "+sets.length),h("h3",{},set.t),ansBox,poolBox,h("div",{class:"row"},cb,h("button",{class:"btn ghost",disabled:checked,onclick:()=>{ans=[];draw()}},"Clear")),h("div",{id:"ofb"}),h("button",{class:"btn",id:"onx",style:"display:none;justify-self:start",onclick:()=>{si++;play()}},"Next"));
+      if(checked){const f=$("#ofb");}
+    };draw();
+  };play();
+}
+
+function gMemory(st){
+  const pairs=shuffle(PAIRS).slice(0,6);const cards=shuffle(pairs.flatMap((p,i)=>[{i,t:p[0]},{i,t:p[1]}]));
+  let a=null,lock=false,moves=0,found=0;
+  const grid=h("div",{class:"mem"});const info=h("div",{class:"note"},"Moves: 0");
+  cards.forEach((c,k)=>{const b=h("button",{class:"mc","aria-label":"Card",onclick:()=>{if(lock||b.classList.contains("up")||b.classList.contains("done"))return;b.classList.add("up");b.textContent=c.t;if(a===null){a=b;return}moves++;info.textContent="Moves: "+moves;const first=a;a=null;if(cards[+first.dataset.k].i===c.i){first.classList.replace("up","done");b.classList.replace("up","done");found++;if(found===6){const xp=Math.max(5,20-moves);addXP(xp,"Matched all");burst();st.append(h("div",{class:"big"},"Done in "+moves+" moves"),h("button",{class:"btn",onclick:()=>gMemory(st)},"Play again"))}}else{lock=true;setTimeout(()=>{[first,b].forEach(x=>{x.classList.remove("up");x.textContent=""});lock=false},850)}},"data-k":k});grid.append(b)});
+  st.replaceChildren(h("div",{class:"note"},"Flip two cards. Match a term with its meaning."),info,grid);
+}
+
+function gMoth(st){
+  let envr="dark",gen=1,dk=12,lt=12,hist=[],busy=false;
+  const N=24;
+  const colors={dark:"#4A2F38",light:"#E9D2C2"};
+  const setup=()=>{st.replaceChildren(h("div",{class:"note"},"You are a hungry bird. Tap moths to eat them before time runs out. The survivors breed (each survivor has 2 offspring), then the next generation appears."),h("div",{class:"row"},["dark","light"].map(e=>h("button",{class:"chipbtn"+(e===envr?" sel":""),onclick:()=>{envr=e;gen=1;dk=12;lt=12;hist=[];setup()}},e==="dark"?"Sooty dark trees":"Pale lichen trees"))),h("button",{class:"btn",onclick:round},"Start generation 1"))};
+  const chart=()=>{const bx=h("div",{style:"display:flex;gap:6px;align-items:flex-end;height:90px"},hist.map((p,i)=>h("div",{style:"flex:1;text-align:center;font-size:11px;font-weight:700"},h("div",{style:`height:${Math.max(4,p*0.7)}px;background:var(--pink);border-radius:6px 6px 0 0`}),"G"+(i+1)+" "+p+"%")));return h("div",{},h("div",{class:"note"},"Share of dark moths in each generation:"),bx)};
+  const round=()=>{
+    if(busy)return;busy=true;let left=8,eatenD=0,eatenL=0;
+    const bark=h("div",{class:"bark",style:`background:repeating-linear-gradient(95deg,${colors[envr]},${colors[envr]} 14px,color-mix(in srgb,${colors[envr]} 88%,#000) 14px,color-mix(in srgb,${colors[envr]} 88%,#000) 17px)`});
+    const mk=(cls,n)=>{for(let i=0;i<n;i++){const m=h("button",{class:"moth "+cls,"aria-label":(cls==="dk"?"Dark":"Light")+" moth",style:`left:${4+Math.random()*88}%;top:${4+Math.random()*86}%;transform:rotate(${Math.random()*360}deg)`,onclick:()=>{if(left<=0)return;m.remove();cls==="dk"?eatenD++:eatenL++}});bark.append(m)}};
+    mk("dk",dk);mk("lt",lt);
+    const tm=h("div",{class:"timer"},left+"s");
+    st.replaceChildren(h("div",{class:"row",style:"justify-content:space-between"},h("b",{},"Generation "+gen),tm),bark,h("div",{class:"note"},"Tap fast. Which colour do you notice first?"));
+    clearGame();gameTimer=setInterval(()=>{left--;tm.textContent=left+"s";if(left<=0){clearGame();busy=false;finish()}},1000);
+    const finish=()=>{const sd=dk-eatenD,sl=lt-eatenL;hist.push(Math.round(100*dk/(dk+lt)));let nd=sd*2,nl=sl*2;const tot=nd+nl;if(tot===0){nd=12;nl=12}else{dk=Math.round(N*nd/tot);lt=N-dk}
+      const cont=h("button",{class:"btn",onclick:()=>{gen++;round()}},"Start generation "+(gen+1));
+      const fin=gen>=4;if(fin){addXP(15,"Selection demo");burst()}
+      st.replaceChildren(h("h3",{},"Generation "+gen+" results"),h("div",{class:"card"},h("div",{},"Dark moths eaten: "+eatenD+" of "+(sd+eatenD)),h("div",{},"Light moths eaten: "+eatenL+" of "+(sl+eatenL)),h("div",{class:"note",style:"margin-top:6px"},"Survivors breed. Next generation: "+dk+" dark, "+lt+" light.")),chart(),
+        fin?h("div",{class:"fb ok"},"Look at the pattern. On "+(envr==="dark"?"dark trees light moths are easier to see, so more are eaten and the dark allele becomes more common.":"pale trees dark moths are easier to see, so more are eaten and the light allele becomes more common.")+" That is natural selection: variation, survival, reproduction, change over generations."):cont,
+        fin?h("div",{class:"row"},h("button",{class:"btn",onclick:()=>{envr=envr==="dark"?"light":"dark";gen=1;dk=12;lt=12;hist=[];setup()}},"Try the other trees"),h("button",{class:"btn ghost",onclick:()=>go("learn",{})},"Back to learning")):"")};
+  };
+  setup();
+}
+
+function gPond(st){
+  const N=70+Math.floor(Math.random()*80),M=20,C=25;
+  let R=0;{let mk=M,tot=N;for(let i=0;i<C;i++){if(Math.random()<mk/tot){R++;mk--}tot--}}
+  if(R===0){R=1}
+  const dots=(n,marked)=>{let s='<svg class="pond" viewBox="0 0 320 120" role="img" aria-label="Caught fish">';for(let i=0;i<n;i++){const x=14+Math.random()*292,y=12+Math.random()*96;const m=i<marked;s+=`<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${Math.floor(Math.random()*360)})"><ellipse rx="9" ry="4.5" fill="${m?"var(--pink)":"var(--ink2)"}" stroke="${m?"var(--ink)":"none"}" stroke-width="1.5"/><path d="M8 0l6-4v8z" fill="${m?"var(--pink)":"var(--ink2)"}"/></g>`}return s+"</svg>"};
+  const step1=()=>{st.replaceChildren(h("div",{class:"note"},"A pond has an unknown number of fish. You cannot count them all, so you will estimate."),h("div",{class:"hr"}),h("h3",{},"Step 1: Catch and mark"),h("div",{class:"note"},"Net "+M+" fish, mark each one harmlessly, then release them back."),h("button",{class:"btn",onclick:step2},"Catch and mark "+M+" fish"))};
+  const step2=()=>{const d=h("div");d.innerHTML=dots(M,M);st.replaceChildren(h("h3",{},"M = "+M+" marked fish"),d,h("div",{class:"note"},"They are released. Wait for them to mix with the others."),h("button",{class:"btn",onclick:step3},"Release, mix, then catch again"))};
+  const step3=()=>{const d=h("div");d.innerHTML=dots(C,R);const inp=h("input",{class:"field",type:"number",inputmode:"numeric",id:"pest","aria-label":"Your estimate",placeholder:"Your estimate of N"});const fb=h("div");
+    const chk=h("button",{class:"btn",onclick:()=>{const est=Math.round(M*C/R),v=+inp.value;if(!v){fb.className="fb no";fb.textContent="Type a number first.";return}const ok=Math.abs(v-est)<=1;if(ok){addXP(10,"Estimate right");burst()}fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"Yes. ":"Check the formula. ")+"N = (M × C) ÷ R = ("+M+" × "+C+") ÷ "+R+" = "+est+". The real number was "+N+(Math.abs(est-N)/N<.2?", so your estimate is close.":", so the sample was a little unlucky. Bigger samples help.");q.style.display="grid"}},"Check");
+    const q=h("div",{style:"display:none;gap:6px"},h("div",{style:"font-weight:700"},"Which would make this estimate unreliable?"));
+    shuffle([["Marked fish die or hide after marking",1],["The marks are harmless and the fish mix well",0],["Few fish are born, die or move between catches",0]]).forEach(([t,c])=>q.append(h("button",{class:"opt",style:"margin:0",onclick:e=>{q.querySelectorAll(".opt").forEach(x=>x.disabled=true);if(c){e.currentTarget.classList.add("right");addXP(5,"Nice");}else e.currentTarget.classList.add("wrong");q.append(h("div",{class:"fb "+(c?"ok":"no")},"Marked animals must behave like the rest and the population must stay the same. Otherwise the estimate is biased."),h("button",{class:"btn",style:"justify-self:start",onclick:()=>gPond(st)},"New pond"))}},t)));
+    st.replaceChildren(h("h3",{},"Step 2: Catch again"),d,h("div",{class:"card"},"You catch C = "+C+" fish. R = "+R+" of them are marked (pink)."),h("div",{class:"note"},"Estimate the whole population: N = (M × C) ÷ R."),inp,chk,fb,q)};
+  step1();
+}
+/* ===== TEACH LAB: say it, teach it, write it, check it (any order) ===== */
+function renderTeach(v,opts){
+  const p=h("div",{class:"panel"});v.append(p);
+  if(opts.concept!=null){return lab(p,opts.topic,opts.concept)}
+  if(opts.topic){return conceptList(p,opts.topic)}
+  p.append(h("h2",{},"Teach it"),h("div",{class:"sub"},"Your method, built in: say it out loud, teach it to someone, write what you remember, then check what you left out. Use the steps in any order."));
+  const g=h("div",{class:"grid"});
+  TOPICS.forEach(t=>{const m=mastery(t.id);g.append(h("button",{class:"gamecard",style:`--tc:${tcol(t.id)};border-color:var(--tc)`,onclick:()=>{v.innerHTML="";renderTeach(v,{topic:t.id})}},h("b",{},t.short),h("span",{},t.concepts.length+" concepts"),h("span",{style:"font-weight:700;color:var(--ink)"},m.th>0?Math.round(m.th*100)+"% taught":"Not started")))});
+  p.append(g);
+}
+function conceptList(p,tid){
+  const t=TOP[tid];
+  p.append(h("button",{class:"back",onclick:()=>go("teach")},ico("chev"),"All topics"),h("h2",{},t.name),h("div",{class:"sub"},"Pick one concept to teach."));
+  t.concepts.forEach((c,i)=>{const T=S.teach[tid+"-"+i]||{};const n=T.done?Object.keys(T.done).filter(k=>T.done[k]).length:0;p.append(h("button",{class:"card",style:"display:block;width:100%;text-align:left;margin-bottom:10px;border-color:"+tcol(tid),onclick:()=>{const v=$("#view");v.innerHTML="";renderTeach(v,{topic:tid,concept:i})}},h("h3",{},c.t),h("div",{class:"note",style:"margin-top:4px"},c.say),h("div",{class:"row",style:"margin-top:8px"},h("div",{class:"bar",style:"flex:1"},h("i",{style:`width:${n*25}%`})),h("span",{class:"mono",style:"font-size:12px"},n+"/4 steps"))))});
+}
+function lab(p,tid,ci){
+  const t=TOP[tid],c=t.concepts[ci],key=tid+"-"+ci;
+  const T=S.teach[key]||(S.teach[key]={done:{},text:"",chat:[],manual:{},score:null,fb:null});
+  let active="say";
+  p.append(h("button",{class:"back",onclick:()=>{const v=$("#view");v.innerHTML="";renderTeach(v,{topic:tid})}},ico("chev"),t.short),h("h2",{style:"font-size:24px"},c.t),h("div",{class:"note",style:"margin:6px 0 12px"},"Any order works. Do the steps that help you right now."));
+  const tiles=h("div",{class:"steps"}),body=h("div",{style:"margin-top:14px"});
+  const defs=[["say","Say it","Out loud, no notes"],["teach","Teach it","To the learner or a person"],["write","Write it","What you remember"],["check","Check it","What did you leave out?"]];
+  const drawTiles=()=>{tiles.replaceChildren(...defs.map(([id,l,s])=>{const b=h("button",{class:"step"+(T.done[id]?" isdone":""),"aria-pressed":String(active===id),onclick:()=>{active=id;drawTiles();drawBody()}},h("span",{class:"done"},ico("check")),h("b",{},l),h("span",{},s));return b}))};
+  const mark=(id,xp)=>{if(!T.done[id]){T.done[id]=true;addXP(xp,"Step done");}save();drawTiles()};
+  const drawBody=()=>{body.replaceChildren();({say:sayStep,teach:teachStep,write:writeStep,check:checkStep})[active]()};
+  function sayStep(){
+    let left=60,tm=null;const clock=h("div",{class:"timer",style:"text-align:center"},"1:00");
+    const go1=h("button",{class:"btn",onclick:()=>{if(tm){clearInterval(tm);tm=null;gameTimer=null;go1.textContent="Start again";return}left=60;go1.textContent="Stop";tm=setInterval(()=>{left--;clock.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");if(left<=0){clearInterval(tm);tm=null;go1.textContent="Start again"}},1000)}},"Start 60 seconds");
+    body.append(h("div",{class:"card"},h("div",{class:"badge",style:"display:inline-block"},"Say it"),h("h3",{style:"margin:8px 0"},c.say),h("div",{class:"note"},"Speak out loud as if you are explaining to a friend. No notes. If you get stuck, say that part again in different words."),clock,h("div",{class:"row",style:"justify-content:center;margin-top:6px"},go1,h("button",{class:"btn ghost",onclick:()=>{if(tm)clearInterval(tm);mark("say",3);toast("Now try Teach it or Write it")}},"I said it"))));
+  }
+  function teachStep(){
+    const chat=h("div",{class:"chat","aria-live":"polite"});
+    const addMsg=(r,tx)=>{const m=h("div",{class:"msg "+r},tx);chat.append(m);chat.scrollTop=chat.scrollHeight;return m};
+    if(!T.chat.length)T.chat.push({r:"c",x:"Hi! I am in Grade 9 and I have never heard of "+c.t+". Can you teach me? Start anywhere you like."});
+    T.chat.forEach(m=>addMsg(m.r,m.x));
+    const ta=h("textarea",{class:"field",rows:"3",id:"tchat","aria-label":"Your explanation",placeholder:"Explain it in your own words..."});
+    const fin=h("button",{class:"btn ghost",disabled:!T.chat.some(m=>m.r==="u"),onclick:()=>{mark("teach",5);active="check";drawTiles();drawBody()}},"Finish and check");
+    const termFor=pt=>pt[1].find(x=>/^[a-z-]{4,}$/.test(x)&&!["same","many","only","with","each","from"].includes(x))||null;
+    const acks=["Ooh, okay.","That makes sense so far.","Interesting, I am following.","Got it, thanks!","Okay, I am starting to understand."];
+    const missing=()=>{const all=T.chat.filter(m=>m.r==="u").map(m=>m.x).join(" ").toLowerCase();return c.pts.filter(pt=>!pt[1].some(k=>all.includes(k)))};
+    const send=h("button",{class:"btn",onclick:()=>{const tx=ta.value.trim();if(!tx)return;ta.value="";T.chat.push({r:"u",x:tx});addMsg("u",tx);fin.disabled=false;
+      const nu=T.chat.filter(m=>m.r==="u").length;const miss=missing();let r;
+      if(tx.split(/\s+/).length<6)r="Hmm, can you say a bit more? Try a whole sentence, like you are talking to me.";
+      else if(miss.length){const pt=miss[(nu-1)%miss.length],term=termFor(pt);r=pick(acks)+" "+(term?pick(['I keep hearing the word "'+term+'". What does that have to do with it?','Where does "'+term+'" fit in?','My teacher said "'+term+'". Can you explain that bit?']):"What else is important to know here?")}
+      else r="I think I get it now! Can you sum it all up in one sentence?";
+      T.chat.push({r:"c",x:r});setTimeout(()=>addMsg("c",r),350);save();
+      if(nu>=3||!miss.length){mark("teach",5)}}},"Send");
+    const hint=h("button",{class:"btn ghost",onclick:()=>{const m=missing();addMsg("c",m.length?"Hint: think about "+m[0][0].split(" ").slice(0,4).join(" ")+"...":"You have covered everything I know to ask. Nice!")}},"Hint");
+    body.append(h("div",{class:"card"},h("div",{class:"badge",style:"display:inline-block"},"Teach it"),h("div",{class:"note",style:"margin:8px 0"},"Explain "+c.t+" to the curious Grade 9 learner. They will ask you questions. Pretend they know nothing. You can also say it to a real person."),chat,ta,h("div",{class:"row",style:"margin-top:8px"},send,hint,fin)));
+  }
+  function writeStep(){
+    const ta=h("textarea",{class:"field",rows:"9",id:"twrite","aria-label":"Write what you remember",placeholder:"Write everything you remember about "+c.t+". No peeking at the cards."});ta.value=T.text||"";
+    const wc=h("div",{class:"note"},"");const upd=()=>{const n=(ta.value.trim().match(/\S+/g)||[]).length;wc.textContent=n+" words"};upd();
+    ta.addEventListener("input",()=>{T.text=ta.value;upd();save()});
+    body.append(h("div",{class:"card"},h("div",{class:"badge",style:"display:inline-block"},"Write it"),h("h3",{style:"margin:8px 0"},c.say),ta,wc,h("button",{class:"btn",style:"margin-top:8px",onclick:()=>{mark("write",4);active="check";drawTiles();drawBody()}},"Lock it in and check")));
+  }
+  function checkStep(){
+    const userText=(T.text+" "+T.chat.filter(m=>m.r==="u").map(m=>m.x).join(" ")).toLowerCase();
+    const hit=i=>T.manual[i]!=null?T.manual[i]:c.pts[i][1].some(k=>userText.includes(k));
+    const found=c.pts.filter((_,i)=>hit(i)).length;const pct=Math.round(found/c.pts.length*100);
+    const intro=userText.trim().length<8?"You have not written or taught anything yet, so everything shows as missed. Try Write it or Teach it first, or just tick what you said out loud.":"I spotted these ideas in what you wrote and taught. Tap a point to change it if I got it wrong.";
+    const list=h("div");
+    c.pts.forEach((pt,i)=>{const ok=hit(i);list.append(h("button",{class:"pt "+(ok?"hit":"miss"),onclick:()=>{T.manual[i]=!ok;save();drawBody()}},h("span",{class:"dot"},ok?"✓":"+"),h("span",{},pt[0])))});
+    const out=h("div");
+    const save1=h("button",{class:"btn",style:"margin-top:10px",onclick:()=>{T.score=found/c.pts.length;if(!T.done.check)addXP(5+2*found,"Check done");T.done.check=true;save();drawTiles();burst();toast(found===c.pts.length?"You left nothing out!":"Say the pink ones out loud now")}},"Save my result");
+    body.append(h("div",{class:"card"},h("div",{class:"badge",style:"display:inline-block"},"Check it"),h("div",{class:"scoreRing",style:`--p:${pct}%`},h("b",{},found+"/"+c.pts.length)),h("div",{class:"note",style:"text-align:center"},found===c.pts.length?"Nothing left out.":"Pink points are what you left out."),h("div",{class:"note",style:"margin:10px 0"},intro),list,out,h("div",{class:"row"},save1,h("button",{class:"btn ghost",onclick:()=>{active="say";drawTiles();drawBody()}},"Say the missed ones"))));
+  }
+  p.append(tiles,body);drawTiles();drawBody();
+}
+
+/* ===== BOOT ===== */
+buildShell();
+go("learn");
+</script>
+
+</body></html>
